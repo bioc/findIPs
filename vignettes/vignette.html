@@ -368,7 +368,7 @@ one-step</a></li>
 <li><a href="#results-visualization" id="toc-results-visualization"><span class="toc-section-number">5</span>
 Results visualization</a></li>
 <li><a href="#use-ipsr-in-survival-data" id="toc-use-ipsr-in-survival-data"><span class="toc-section-number">6</span> Use IPSR in survival data</a></li>
-<li><a href="#define-the-rank-criteria" id="toc-define-the-rank-criteria"><span class="toc-section-number">7</span> Define the rank criteria</a></li>
+<li><a href="#customize-the-rank-criteria" id="toc-customize-the-rank-criteria"><span class="toc-section-number">7</span> Customize the rank criteria</a></li>
 <li><a href="#the-choice-of-rank-comparison-methods" id="toc-the-choice-of-rank-comparison-methods"><span class="toc-section-number">8</span> The choice of rank comparison
 methods</a></li>
 <li><a href="#reference" id="toc-reference"><span class="toc-section-number">9</span> Reference</a></li>
@@ -377,25 +377,24 @@ methods</a></li>
 
 <div id="introduction" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>Feature rankings are a crucial aspect of analyzing high-throughput
-data, particularly for bioinformatics studies. These rankings are
-typically obtained by calculating the marginal correlation with the
-outcomes. The ordered feature list reflects the importance of features,
-which plays a vital role in guiding subsequent research. For instance,
-researchers usually focus on a small subset of important features that
-are associated with research objectives. However, the feature ranking
-can be distorted by a single case. The case exerts abnormal influence on
-the feature ranking is termed as influential points (IPs). The presence
-of IPs renders the feature ranking unreliable, consequently affecting
-the subsequent analysis based on feature rankings.</p>
-<p>The <em>IPSR</em> R package is specifically designed to detect
-influential observations for feature rankings. The method utilized in
-this package is based on the leave-one-out strategy, which involves
-comparing the rank difference between the original ranking and a new
-ranking that is obtained by removing a single observation (1). Such new
-rankings are known as leave-one-out rankings. The rank difference
-obtained through this comparison helps to determine the influence of the
-deleted observation.</p>
+<p>Feature rankings are important in analyzing high-throughput data,
+particularly for bioinformatics studies. These rankings are typically
+obtained by calculating the marginal correlations with the outcomes. The
+ordered feature list reflects the importance of features, which plays a
+vital role in guiding subsequent research. For instance, researchers
+usually focus on a small subset of important features that are
+associated with research objectives. However, the feature ranking can be
+distorted by a single case. The case exerts abnormal influence on the
+feature ranking is termed as influential points (IPs). The presence of
+IPs renders the feature ranking unreliable, consequently affecting the
+subsequent analysis based on feature rankings.</p>
+<p>The <em>IPSR</em> R package is specifically designed to detect IPs
+for feature rankings. The method utilized in this package is based on
+the leave-one-out strategy, which involves comparing the rank difference
+between the original ranking and a new ranking that is obtained by
+removing a single observation (1). T new rankings are leave-one-out
+rankings. The rank difference obtained through this comparison helps to
+determine the influence of the deleted observation.</p>
 <p>The whole process can be divided into three steps,</p>
 <p>Step 1, generate the original and leave-one-out rankings using a
 feature ranking method, such as t-test. A dataset with n cases will
@@ -410,10 +409,10 @@ points.</p>
 <h1><span class="header-section-number">2</span> Dataset</h1>
 <p>The <em>IPSR</em> package includes the miller05 microarray data (2).
 The data contains 236 samples and 1,000 genes. It has two types of
-responses: binary and survival. The binary response pertains to two
-categories: 58 cases with a p53 mutant and 193 cases with the wild-type
-p53 mutation. The survival response is associated with a total of 55
-recorded events.</p>
+responses: binary and survival. The binary response is classified based
+on the p53 mutation: 58 cases with a p53 mutant and 193 cases with the
+wild-type p53 mutation. The survival response is associated with a total
+of 55 recorded events.</p>
 <pre class="r"><code>library(IPSR)
 data(miller05)
 X &lt;- miller05$X
@@ -426,12 +425,13 @@ surv &lt;- miller05$surv</code></pre>
 <p>We use a simple example where features are ranked based on t.test to
 demonstrate the use of <em>IPSR</em> package for IPs detection. We use
 <em>getdrop1ranks()</em> to derive the original ranking and
-leave-one-out rankings. Genes were simply ranked according to the
+leave-one-out rankings. Features are simply ranked according to the
 p.values of t.test. Of note, the rank criteria is the p.value if <em>fun
-= “t.test”</em>. P.values were ranked in ascending order by specifying
-<em>decreasing = FALSE</em>. We selected the top 100 important genes in
-the original ranking. The returned object contains the original ranking
-(origRank) and a matrix of leave-one-out rankings (drop1Rank).</p>
+= “t.test”</em>. P.values are ranked in ascending order by specifying
+<em>decreasing = FALSE</em>. We select the top 100 important features in
+the original ranking. The function returns an object containing a vector
+of original ranking (origRank) and a matrix of leave-one-out rankings
+(drop1Rank).</p>
 <pre class="r"><code>
 obj &lt;- getdrop1ranks(X, y, fun = &quot;t.test&quot;, decreasing = FALSE, topN = 100)
 str(obj)
@@ -503,10 +503,10 @@ visualization</h1>
 <p><em>IPSR</em> package offers three visualization functions:
 <em>plot.ips()</em>, <em>plotRankScatters()</em>, and
 <em>plotAdaptiveWeights()</em>. <em>plot.ips()</em> can directly utilize
-the output of <em>ipsr()</em> or <em>sumRanks()</em> to creat a lollipop
-plot that displays the influence of each case. In Figure 1, we can see
-that the observation 68 (obs68) seems to be more influential on the
-final results. However, the difference between obs68 and the other
+the output of <em>ipsr()</em> or <em>sumRanks()</em> to create a
+lollipop plot that displays the influence of each case. In Figure 1, we
+can see that the observation 68 (obs68) seems to be more influential on
+the final results. However, the difference between obs68 and the other
 observations is not that distinct, indicating a lower possibility of the
 presence of an influential observation.</p>
 <pre class="r"><code>par(mar = c(4, 4, 2, 2))
@@ -520,10 +520,10 @@ Figure 1, the influence scores for each observation
 <p>In addition to the lollipop, <em>IPSR</em> also provides a simple
 visualization function <em>plotRankScatters()</em> that exhibits the
 distribution of rank changes using a scatter plot (Figure 2). Alike
-<em>plot.ips()</em>, <em>plotRankScatters()</em> simply use the output
+<em>plot.ips()</em>, <em>plotRankScatters()</em> simply uses the output
 of <em>ipsr()</em> or <em>sumRanks()</em>. According to Figure 2, we can
 observe more rank changes in the tail side, but less changes in the
-head. The black points denotes the rank changes caused by the most
+head. The black points denote the rank changes caused by the most
 influential case.</p>
 <pre class="r"><code>par(mar = c(4, 4, 2, 2))
 plotRankScatters(results.ipsr)</code></pre>
@@ -567,20 +567,19 @@ Figure 4, IPs detection for survival data
 </p>
 </div>
 </div>
-<div id="define-the-rank-criteria" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Define the rank
+<div id="customize-the-rank-criteria" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Customize the rank
 criteria</h1>
 <p>In addtion to the provided ranking criteria in <em>ipsr()</em> or
 <em>sumRanks()</em>, which includes “t.test”, “cox”, “log2fc”, and
-“kruskal.test”. We can also use a custom function to rank features based
-on a specified rank criterion. To this end, we can pass the custom
-function to the <em>fun</em> argument. The function should take
-<em>x</em> and <em>y</em> as inputs and output the rank criterion, such
-as p-values.</p>
+“kruskal.test”. We can also rank features based on a specified rank
+criterion. To this end, we can pass a function to the <em>fun</em>
+argument. The function should take <em>x</em> and <em>y</em> as inputs
+and output the rank criterion, such as p-values.</p>
 <p>As an example, we can rank features based on the p-values obtained
 from the kruskal.test. We can either specify <em>fun =
 “kruskal.test”</em>, as this test has been implemented in the package,
-or define our own function to pass to <em>getdrop1ranks</em>. Both
+or define our own function passing to <em>getdrop1ranks</em>. Both
 methods produce the same results.</p>
 <pre class="r"><code>fun &lt;- function(x, y) {
     kruskal.test(x, y)$p.value
@@ -600,7 +599,7 @@ comparison methods</h1>
 weighted Spearman, and adaptive weights. We recommend using the adaptive
 weights. Here, we compare the three methods. Weighted Spearman and the
 adaptive weights method demonstrates similar results. But both are
-differnt weight the unweighted method.</p>
+different from the unweighted method.</p>
 <pre class="r"><code>re.unweighted &lt;- ipsr(X, y, fun = &quot;t.test&quot;, decreasing = FALSE, method = &quot;unweighted&quot;)
 re.weighted &lt;- ipsr(X, y, fun = &quot;t.test&quot;, decreasing = FALSE, method = &quot;weightedSpearman&quot;)
 re.adaptive &lt;- ipsr(X, y, fun = &quot;t.test&quot;, decreasing = FALSE, method = &quot;adaptive&quot;)
