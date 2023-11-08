@@ -1,13 +1,18 @@
 Package: IPSR
 Title: Influential Points Detection for Feature Rankings
 Version: 0.0.0.9000
-Authors@R: 
-    person("Shuo", "Wang", , "wangsures@foxmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-    person("Junyan", "Lu", , "junyan.lu@uni-heidelberg.de", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-
-Description: Feature rankings can be distorted by a single case in the context of high-dimensional data. The cases exerts abnormal influence on feature rankings are called influential points (IPs). The package aims at detecting IPs based on case deletion and quantifies their effects by measuring the rank changes. The package applies a novel rank comparing measure using the adaptive weights that stress the top-ranked important features and adjust the weights to ranking properties.
+Authors@R: c(
+    person("Shuo", "Wang", , "wangsures@foxmail.com", role = c("aut", "cre")),
+    person("Junyan", "Lu", , "junyan.lu@uni-heidelberg.de", role = "aut")
+  )
+Description: Feature rankings can be distorted by a single case in the
+    context of high-dimensional data. The cases exerts abnormal influence
+    on feature rankings are called influential points (IPs). The package
+    aims at detecting IPs based on case deletion and quantifies their
+    effects by measuring the rank changes. The package applies a novel
+    rank comparing measure using the adaptive weights that stress the
+    top-ranked important features and adjust the weights to ranking
+    properties.
 License: GPL (>= 3)
 URL: https://github.com/ShuoStat
 Depends: 
