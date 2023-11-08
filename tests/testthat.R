@@ -1,78 +1,116 @@
+
 library(testthat)
 library(IPSR)
 
-#- generate data --
-
+# get data
+data(miller05)
 X <- miller05$X
 y <- miller05$y
 surv <- miller05$surv
 
-#- 1, function: getdrop1ranks
-#- 1.1 test getdrop1ranks using "t.test", "cox", and specified function
+# save expected results
 
-test_that("getdrop1ranks using t.test",
-          {expect_equal(
-            names(getdrop1ranks(X, y, fun = "t.test", 
-                                decreasing = F, 
-                                topn = 100, 
-                                ncores = NULL)),
-            c("orig", "drop1rank"))})
+# obj <- getdrop1ranks(X, y,
+#                      fun = "t.test",
+#                      decreasing = FALSE,
+#                      topN = 100)
+#
+# expected.t.adaptive <- sumRanks(origRank = obj$origRank,
+#                                 drop1Rank = obj$drop1Rank,
+#                                 topN = 100,
+#                                 method = "adaptive")
+#
+# expected.t.unweighted <- sumRanks(origRank = obj$origRank,
+#                                   drop1Rank = obj$drop1Rank,
+#                                   topN = 100,
+#                                   method = "unweighted")
+#
+# expected.t.weighted <- sumRanks(origRank = obj$origRank,
+#                                 drop1Rank = obj$drop1Rank,
+#                                 topN = 100,
+#                                 method = "weightedSpearman")
+#
+# expected.t.adaptive.ipsr <- ipsr(X, y,
+#                                  fun = "t.test",
+#                                  decreasing = FALSE,
+#                                  topN = 100,
+#                                  method = "adaptive")
+#
+#
+# expected.cox.adaptive.ipsr <- ipsr(X, surv,
+#                                    fun = "cox",
+#                                    decreasing = FALSE,
+#                                    topN = 100,
+#                                    method = "adaptive")
+#
+# save(list = c("expected.t.adaptive", "expected.t.unweighted",
+#               "expected.t.weighted", "expected.t.adaptive.ipsr",
+#               "expected.cox.adaptive.ipsr"),
+#      file = "./expectedResults/expectedResults.RData")
 
-test_that("getdrop1ranks using cox",
-          {expect_equal(
-            names(getdrop1ranks(X, surv, fun = "cox", 
-                                decreasing = F, 
-                                topn = 100, 
-                                ncores = NULL)),
-            c("orig", "drop1rank"))})
+# get observed results
 
-# using log-fold change function
-log2fc <- function(x, y){
-  
-  y <- as.factor(y)
-  abs(log2(mean(x[y == levels(y)[1]]) / mean(x[y == levels(y)[2]])))
-  
-}
+load("./expectedResults/expectedResults.RData")
 
-test_that("getdrop1ranks using specified function",
-          {expect_equal(
-            names(getdrop1ranks(X, y, fun = log2fc, 
-                                decreasing = T, 
-                                topn = 100, ncores = NULL)),
-            c("orig", "drop1rank"))})
+obj <- getdrop1ranks(X, y,
+                     fun = "t.test",
+                     decreasing = FALSE,
+                     topN = 100)
+
+observed.t.adaptive <- sumRanks(origRank = obj$origRank,
+                                drop1Rank = obj$drop1Rank,
+                                topN = 100,
+                                method = "adaptive")
+
+observed.t.unweighted <- sumRanks(origRank = obj$origRank,
+                                  drop1Rank = obj$drop1Rank,
+                                  topN = 100,
+                                  method = "unweighted")
+
+observed.t.weighted <- sumRanks(origRank = obj$origRank,
+                                drop1Rank = obj$drop1Rank,
+                                topN = 100,
+                                method = "weightedSpearman")
+
+observed.t.adaptive.ipsr <- ipsr(X, y,
+                                 fun = "t.test",
+                                 decreasing = FALSE,
+                                 topN = 100,
+                                 method = "adaptive")
+
+observed.cox.adaptive.ipsr <- ipsr(X, surv,
+                                   fun = "cox",
+                                   decreasing = FALSE,
+                                   topN = 100,
+                                   method = "adaptive")
+
+test_that("test getdrop1ranks and sumRanks",{
+  expect_equal(expected.t.adaptive, observed.t.adaptive)
+  expect_equal(expected.t.unweighted, observed.t.unweighted)
+  expect_equal(expected.t.weighted, expected.t.weighted)
+})
+
+test_that("stepwise(getdrop1ranks and sumRanks) and one-step procedure",{
+  expect_equal(observed.t.adaptive.ipsr, observed.t.adaptive)
+})
+
+test_that("test ipsr",{
+  expect_equal(expected.t.adaptive.ipsr, observed.t.adaptive.ipsr)
+})
+
+test_that("test ipsr for survival outcomes (ranked by univariate cox)",{
+  expect_equal(expected.cox.adaptive.ipsr, observed.cox.adaptive.ipsr)
+})
 
 
-#- 2, rank.compare
-
-out <- getdrop1ranks(X, y, fun = "t.test", 
-                     decreasing = F, 
-                     topn = 100, 
-                     ncores = NULL)
 
 
-test_that("rank commpare using L1 or L2", {
-  
-  expect_error(rank.compare(refr = out$orig[-1], matr = out$drop1rank, 
-                                  dist = "L1"),
-               "lists in refr and matr should be equal in length")
-  
-  expect_error(rank.compare(refr = c(out$orig[-1], "a"), matr = out$drop1rank, 
-                            dist = "L1"),
-               "refr and matr should contain the same elements")
-  
-  expect_equal(names(rank.compare(refr = out$orig, matr = out$drop1rank, 
-                                  dist = "L1")),
-               c("kappa", "orig.ranks", "weighted.ranks", "score"))
-  
-  expect_equal(names(rank.compare(refr = out$orig, matr = out$drop1rank, 
-                                  dist = "L2")),
-               c("kappa", "orig.ranks", "weighted.ranks", "score"))})
 
-test_that("data type of matr", {
-   expect_error(rank.compare(refr = out$orig, matr = list(), dist = "L2"),
-               "matr should be matrix or data.frame")
-  })
 
-#- 
+
+
+
+
+
 
 
