@@ -1,5 +1,4 @@
 ---
-title: "IPSR: Detect Influential Obseravation for Feature Rankings"
 author: "Shuo Wang"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 
@@ -16,7 +15,7 @@ header-includes:
     - \doublespacing
     
 vignette: >
-  %\VignetteIndexEntry{"IPSR: Detect Influential Obseravation for Feature Rankings"}
+  %\VignetteIndexEntry{"findIPs: Detect Influential Obseravation for Feature Rankings"}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   
@@ -32,10 +31,10 @@ knitr::opts_chunk$set(
 
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(
-	message = FALSE,
-	warning = FALSE,
-	tidy = TRUE,
-	fig.pos = "h"
+  message = FALSE,
+  warning = FALSE,
+  tidy = TRUE,
+  fig.pos = "h"
 )
 options(width = 100)
 knitr::opts_chunk$set(tidy.opts=list(width.cutoff = 75))
@@ -56,7 +55,7 @@ knitr::knit_hooks$set(output = function(x, options) {
   if (!is.null(n <- options$out.lines)) {
     x <- xfun::split_lines(x)
     if (length(x) > n) {
-        
+      
       # truncate the output
       x <- c(head(x, n), "....\n")
     }
@@ -70,7 +69,7 @@ knitr::knit_hooks$set(output = function(x, options) {
 
 Feature rankings are important in analyzing high-throughput data, particularly for bioinformatics studies. These rankings are typically obtained by calculating the marginal correlations with the outcomes. The ordered feature list reflects the importance of features, which plays a vital role in guiding subsequent research. For instance, researchers usually focus on a small subset of important features that are associated with research objectives. However, the feature ranking can be distorted by a single case. The case exerts abnormal influence on the feature ranking is termed as influential points (IPs). The presence of IPs renders the feature ranking unreliable, consequently affecting the subsequent analysis based on feature rankings.
 
-The *IPSR* R package is specifically designed to detect IPs for feature rankings. The method utilized in this package is based on the leave-one-out strategy, which involves comparing the rank difference between the original ranking and a new ranking that is obtained by removing a single observation (1). T new rankings are  leave-one-out rankings. The rank difference obtained through this comparison helps to determine the influence of the deleted observation.
+The *findIPs* R package is specifically designed to detect IPs for feature rankings. The method utilized in this package is based on the leave-one-out strategy, which involves comparing the rank difference between the original ranking and a new ranking that is obtained by removing a single observation (1). T new rankings are  leave-one-out rankings. The rank difference obtained through this comparison helps to determine the influence of the deleted observation.
 
 The whole process can be divided into three steps,  
 
@@ -82,10 +81,10 @@ Step 3, calculate the cumulative rank changes for each observation. A diagnostic
 
 # Dataset
 
-The *IPSR* package includes the miller05 microarray data (2). The data contains 236 samples and 1,000 genes. It has two types of responses: binary and survival. The binary response is classified based on the p53 mutation: 58 cases with a p53 mutant and 193 cases with the wild-type p53 mutation. The survival response is associated with a total of 55 recorded events. 
+The *findIPs* package includes the miller05 microarray data (2). The data contains 236 samples and 1,000 genes. It has two types of responses: binary and survival. The binary response is classified based on the p53 mutation: 58 cases with a p53 mutant and 193 cases with the wild-type p53 mutation. The survival response is associated with a total of 55 recorded events. 
 
 ```{r}
-library(IPSR)
+library(findIPs)
 data(miller05)
 X <- miller05$X
 y <- miller05$y
@@ -94,7 +93,7 @@ surv <- miller05$surv
 
 # Detect IPs using *getdrop1ranks()* and *sumRanks()*  
 
-We use a simple example where features are ranked based on t.test to demonstrate the use of *IPSR* package for IPs detection. We use *getdrop1ranks()* to derive the original ranking and leave-one-out rankings. Features are simply ranked according to the p.values of t.test. Of note, the rank criteria is the p.value if *fun = "t.test"*. P.values are ranked in ascending order by specifying *decreasing = FALSE*. We select the top 100 important features in the original ranking. The function returns an object containing a vector of original ranking (origRank) and a matrix of leave-one-out rankings (drop1Rank).
+We use a simple example where features are ranked based on t.test to demonstrate the use of *findIPs* package for IPs detection. We use *getdrop1ranks()* to derive the original ranking and leave-one-out rankings. Features are simply ranked according to the p.values of t.test. Of note, the rank criteria is the p.value if *fun = "t.test"*. P.values are ranked in ascending order by specifying *decreasing = FALSE*. We select the top 100 important features in the original ranking. The function returns an object containing a vector of original ranking (origRank) and a matrix of leave-one-out rankings (drop1Rank).
 
 ```{r}
 
@@ -131,21 +130,21 @@ The outputs of *sumRanks()* are diverse across the selected methods. For *method
 
 However, if the method is "weightedSpearman" or "unweighted", the function will only return three elements: "score", "origRank", and "drop1RankWeighted". The elements "kappa", "origRankWeighted", and "drop1RankWeighted" will not be returned.
 
-# Use *ipsr()* to detect IPs in one-step
+# Use *findIPs()* to detect IPs in one-step
 
-*ipsr()* combines *getdrop1ranks()* and *sumRanks()* into one step. The output is identical to using the two-step process.
+*findIPs()* combines *getdrop1ranks()* and *sumRanks()* into one step. The output is identical to using the two-step process.
 
 ```{r}
-results.ipsr <- ipsr(X, y, 
-                     fun = "t.test",
-                     decreasing = FALSE,
-                     method = "adaptive")
+results.ipsr <- findIPs(X, y, 
+                        fun = "t.test",
+                        decreasing = FALSE,
+                        method = "adaptive")
 
 identical(results, results.ipsr)
 ```
 # Results visualization 
 
-*IPSR* package offers three visualization functions: *plot.ips()*, *plotRankScatters()*, and *plotAdaptiveWeights()*. *plot.ips()* can directly utilize the output of *ipsr()* or *sumRanks()* to create a lollipop plot that displays the influence of each case. In Figure 1, we can see that the observation 68 (obs68) seems to be more influential on the final results. However, the difference between obs68 and the other observations is not that distinct, indicating a lower possibility of the presence of an influential observation.
+*findIPs* package offers three visualization functions: *plot.ips()*, *plotRankScatters()*, and *plotAdaptiveWeights()*. *plot.ips()* can directly utilize the output of *findIPs()* or *sumRanks()* to create a lollipop plot that displays the influence of each case. In Figure 1, we can see that the observation 68 (obs68) seems to be more influential on the final results. However, the difference between obs68 and the other observations is not that distinct, indicating a lower possibility of the presence of an influential observation.
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 1, the influence scores for each observation"}
 par(mar = c(4, 4, 2, 2))
@@ -153,7 +152,7 @@ plot(results.ipsr, topn = 5, ylim = c(0, 8))
 
 ```
 
-In addition to the lollipop, *IPSR* also provides a simple visualization function *plotRankScatters()* that exhibits the distribution of rank changes using a scatter plot (Figure 2). Alike *plot.ips()*, *plotRankScatters()* simply uses the output of *ipsr()* or *sumRanks()*. According to Figure 2, we can observe more rank changes in the tail side, but less changes in the head. The black points denote the rank changes caused by the most influential case.  
+In addition to the lollipop, *findIPs* also provides a simple visualization function *plotRankScatters()* that exhibits the distribution of rank changes using a scatter plot (Figure 2). Alike *plot.ips()*, *plotRankScatters()* simply uses the output of *findIPs()* or *sumRanks()*. According to Figure 2, we can observe more rank changes in the tail side, but less changes in the head. The black points denote the rank changes caused by the most influential case.  
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 2, the distribution of rank changes"}
 par(mar = c(4, 4, 2, 2))
@@ -161,7 +160,7 @@ plotRankScatters(results.ipsr)
 
 ```
 
-The *plotAdaptiveWeights()* function aims to Visualize weight function if adaptive weights are used for rank comparison, that is *method = "adaptive"* for *ipsr()* or *sumRanks()*. The argument *kappa* refers to the shape parameter of the weight function. Here, the optimized kappa is 0.023 (Figure 3). n is the length of the feature list. We select the top 100 features, hence, *n = 100*. We can observe that more weights are allocated to the top-ranked features.  
+The *plotAdaptiveWeights()* function aims to Visualize weight function if adaptive weights are used for rank comparison, that is *method = "adaptive"* for *findIPs()* or *sumRanks()*. The argument *kappa* refers to the shape parameter of the weight function. Here, the optimized kappa is 0.023 (Figure 3). n is the length of the feature list. We select the top 100 features, hence, *n = 100*. We can observe that more weights are allocated to the top-ranked features.  
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 3, the weight function of the adaptive weights"}
 par(mar = c(4, 4, 2, 2))
@@ -169,16 +168,16 @@ plotAdaptiveWeights(results.ipsr$kappa, n = 100, type = "line")
 
 ```
 
-# Use IPSR in survival data
+# Use findIPs in survival data
 
 For survival analysis, we offer the option to rank features using univariate Cox model by setting *fun = "cox"*. The features are ranked in ascending order based on their P-values.
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 4, IPs detection for survival data"}
 par(mar = c(4, 4, 2, 2))
-results.cox <- ipsr(X, surv, 
-                    fun = "cox",
-                    decreasing = FALSE,
-                    method = "adaptive")
+results.cox <- findIPs(X, surv, 
+                       fun = "cox",
+                       decreasing = FALSE,
+                       method = "adaptive")
 
 plot(results.cox)
 ```
@@ -186,7 +185,7 @@ plot(results.cox)
 
 # Customize the rank criteria
 
-In addtion to the provided ranking criteria in *ipsr()* or *sumRanks()*, which includes "t.test", "cox", "log2fc", and "kruskal.test". We can also rank features based on a specified rank criterion. To this end, we can pass a function to the *fun* argument.  The function should take *x* and *y* as inputs and output the rank criterion, such as p-values.
+In addtion to the provided ranking criteria in *findIPs()* or *sumRanks()*, which includes "t.test", "cox", "log2fc", and "kruskal.test". We can also rank features based on a specified rank criterion. To this end, we can pass a function to the *fun* argument.  The function should take *x* and *y* as inputs and output the rank criterion, such as p-values.
 
 As an example, we can rank features based on the p-values obtained from the kruskal.test. We can either specify *fun = "kruskal.test"*, as this test has been implemented in the package, or define our own function passing to *getdrop1ranks*. Both methods produce the same results.
 
@@ -209,21 +208,21 @@ identical(kruskal.test1, kruskal.test2)
 
 # The choice of rank comparison methods
 
-*IPSR* provides three rank comparison methods: unweighted, weighted Spearman, and adaptive weights. We recommend using the adaptive weights. Here, we compare the three methods. Weighted Spearman and the adaptive weights method demonstrates similar results. But both are different from the unweighted method. 
+*findIPs* provides three rank comparison methods: unweighted, weighted Spearman, and adaptive weights. We recommend using the adaptive weights. Here, we compare the three methods. Weighted Spearman and the adaptive weights method demonstrates similar results. But both are different from the unweighted method. 
 
 ```{r, fig.width = 9, fig.height = 3, fig.cap = "Figure 5, IPs detection using three rank comparison methods"}
-re.unweighted <- ipsr(X, y, 
-                    fun = "t.test",
-                    decreasing = FALSE,
-                    method = "unweighted")
-re.weighted <- ipsr(X, y, 
-                    fun = "t.test",
-                    decreasing = FALSE,
-                    method = "weightedSpearman")
-re.adaptive <- ipsr(X, y, 
-                    fun = "t.test",
-                    decreasing = FALSE,
-                    method = "adaptive")
+re.unweighted <- findIPs(X, y, 
+                         fun = "t.test",
+                         decreasing = FALSE,
+                         method = "unweighted")
+re.weighted <- findIPs(X, y, 
+                       fun = "t.test",
+                       decreasing = FALSE,
+                       method = "weightedSpearman")
+re.adaptive <- findIPs(X, y, 
+                       fun = "t.test",
+                       decreasing = FALSE,
+                       method = "adaptive")
 
 par(mfrow = c(1, 3), mar = c(4, 4, 2, 2))
 plot(re.unweighted)

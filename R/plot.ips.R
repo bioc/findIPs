@@ -4,7 +4,7 @@
 #' @description
 #' Visualize influential score using lollipop plot
 #'
-#' @param obj the objective obtained from \code{rank.compare} or \code{ipsr} function
+#' @param obj the objective obtained from \code{rank.compare} or \code{findIPs} function
 #' @param topn the top n most influential points to be labelled in the plot.
 #' @param ylim y coordinates ranges
 #' @examples

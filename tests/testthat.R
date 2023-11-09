@@ -1,6 +1,6 @@
 
 library(testthat)
-library(IPSR)
+library(findIPs)
 
 # get data
 data(miller05)
@@ -30,14 +30,14 @@ surv <- miller05$surv
 #                                 topN = 100,
 #                                 method = "weightedSpearman")
 #
-# expected.t.adaptive.ipsr <- ipsr(X, y,
+# expected.t.adaptive.ipsr <- findIPs(X, y,
 #                                  fun = "t.test",
 #                                  decreasing = FALSE,
 #                                  topN = 100,
 #                                  method = "adaptive")
 #
 #
-# expected.cox.adaptive.ipsr <- ipsr(X, surv,
+# expected.cox.adaptive.ipsr <- findIPs(X, surv,
 #                                    fun = "cox",
 #                                    decreasing = FALSE,
 #                                    topN = 100,
@@ -72,17 +72,17 @@ observed.t.weighted <- sumRanks(origRank = obj$origRank,
                                 topN = 100,
                                 method = "weightedSpearman")
 
-observed.t.adaptive.ipsr <- ipsr(X, y,
-                                 fun = "t.test",
-                                 decreasing = FALSE,
-                                 topN = 100,
-                                 method = "adaptive")
+observed.t.adaptive.ipsr <- findIPs(X, y,
+                                    fun = "t.test",
+                                    decreasing = FALSE,
+                                    topN = 100,
+                                    method = "adaptive")
 
-observed.cox.adaptive.ipsr <- ipsr(X, surv,
-                                   fun = "cox",
-                                   decreasing = FALSE,
-                                   topN = 100,
-                                   method = "adaptive")
+observed.cox.adaptive.ipsr <- findIPs(X, surv,
+                                      fun = "cox",
+                                      decreasing = FALSE,
+                                      topN = 100,
+                                      method = "adaptive")
 
 test_that("test getdrop1ranks and sumRanks",{
   expect_equal(expected.t.adaptive, observed.t.adaptive)

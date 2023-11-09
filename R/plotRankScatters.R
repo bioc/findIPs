@@ -1,11 +1,10 @@
-
 #' Visualize the unweighted rank changes
 #'
 #' @description
 #' Visualize the unweighted rank changes using scatter plot. The plot displays
 #' the original ranking and leave-one-out rankings.
 #'
-#' @param obj the objective obtained from \code{ipsr()} or \code{sumRanks()}
+#' @param obj the objective obtained from \code{findIPs()} or \code{sumRanks()}
 #' functions
 #' @param top logical, whether the most influential case needs to be plot in
 #' black

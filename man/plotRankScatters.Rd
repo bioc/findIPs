@@ -7,7 +7,7 @@
 plotRankScatters(obj, top = TRUE, points.arg = list(), top.arg = list())
 }
 \arguments{
-\item{obj}{the objective obtained from \code{ipsr()} or \code{sumRanks()}
+\item{obj}{the objective obtained from \code{findIPs()} or \code{sumRanks()}
 functions}
 
 \item{top}{logical, whether the most influential case needs to be plot in

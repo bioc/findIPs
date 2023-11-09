@@ -7,7 +7,7 @@
 \method{plot}{ips}(obj, topn = 5, ylim = NULL)
 }
 \arguments{
-\item{obj}{the objective obtained from \code{rank.compare} or \code{ipsr} function}
+\item{obj}{the objective obtained from \code{rank.compare} or \code{findIPs} function}
 
 \item{topn}{the top n most influential points to be labelled in the plot.}
 

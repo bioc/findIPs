@@ -20,7 +20,7 @@ getdrop1ranks(
 
 \item{fun}{fun can either be a character or a function. fun should be one of
 the "t.test", "cox", "log2fc", and "kruskal.test" when it is a character.
-\code{ipsr()} incorporates four widely used ranking criteria: t-test,
+\code{findIPs()} incorporates four widely used ranking criteria: t-test,
 univariate cox model, log2fc, and kruskal test, whose outputs are p values
 except log2fc (absolute log2 fold changes). The features would be ordered by
 specifying the argument \code{decreasing}. For instance, if \code{fun = "t.test"},
