@@ -15,3 +15,6 @@ Currently, the package can be installed via GitHub
 # install.packages("devtools")
 devtools::install_github("ShuoStat/findIPs")
 ```
+# Future work
+
+The present version of findIPs can rank features based on i) t.test, univariate cox model, log2fc, and kruskal test; ii) customized ranking criteria. However, there is currently no direct link between findIPs and widely used differential expression methods like Deseqs or Limma. Our next task is to establish this connection so that these popular packages can be integrated into findIPs.
