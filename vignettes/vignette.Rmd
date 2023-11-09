@@ -1,14 +1,18 @@
 ---
-author: "Shuo Wang"
+title: "findIPs: Detect Influential Obseravation for Feature Rankings"
+author:
+- name: Shuo Wang
+  affiliation: 
+  - Medical Faculty Heidelberg, Heidelberg University
+  - Institute of Medical Biometry and Statistics, University of Freiburg
+  email: wangsures@foxmail.com
+- name: Junyan Lu
+  affiliation: Medical Faculty Heidelberg, Heidelberg University
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 
 output:
-  html_document:
-    fig_caption: yes
-    toc: yes
-    toc_depth = 1: 
-    number_sections: yes
-    fig_crop: no
+   BiocStyle::html_document: default
+   BiocStyle::pdf_document: default
 link-citations: yes
 header-includes:
     - \usepackage{setspace}
@@ -18,52 +22,7 @@ vignette: >
   %\VignetteIndexEntry{"findIPs: Detect Influential Obseravation for Feature Rankings"}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  
 ---
-
-```{r include=FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
-
-```{r setup, echo=FALSE}
-knitr::opts_chunk$set(
-  message = FALSE,
-  warning = FALSE,
-  tidy = TRUE,
-  fig.pos = "h"
-)
-options(width = 100)
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff = 75))
-
-```
-
-
-```{r include=FALSE}
-
-# the code in this chunk enables us to truncate the print output for each
-# chunk using the `out.lines` option
-# save the built-in output hook
-
-hook_output <- knitr::knit_hooks$get("output")
-
-# set a new output hook to truncate text output
-knitr::knit_hooks$set(output = function(x, options) {
-  if (!is.null(n <- options$out.lines)) {
-    x <- xfun::split_lines(x)
-    if (length(x) > n) {
-      
-      # truncate the output
-      x <- c(head(x, n), "....\n")
-    }
-    x <- paste(x, collapse = "\n")
-  }
-  hook_output(x, options)
-})
-```
 
 # Introduction
 
@@ -234,12 +193,16 @@ mtext("C, adaptive weights", side = 3, line = 0, adj = 0)
 
 ```
 
-# Reference
+# References {.unnumbered}
 
 1, Wang, Shuo, and Junyan Lu. "Detect influential points of feature rankings." arXiv preprint arXiv:2303.10516 (2023).  
 2, Miller, Lance D., et al. "An expression signature for p53 status in human breast cancer predicts mutation status, transcriptional effects, and patient survival." Proceedings of the National Academy of Sciences 102.38 (2005): 13550-13555.doi:10.1073pnas.0506230102
 3, Da Pinto Costa, Joaquim; Soares, Carlos (2005): A weighted rank measure of correlation. In Australian & New Zealand Journal of Statistics 47 (4), pp. 515–529.  
 
 
+# Session info
+```{r, echo = F}
+sessionInfo()
+```
 
 

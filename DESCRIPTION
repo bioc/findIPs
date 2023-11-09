@@ -23,9 +23,12 @@ Imports:
     survival
 Suggests: 
     rmarkdown,
-    testthat
-VignetteBuilder: 
+    testthat,
+    BiocStyle,
+    knitr, 
     rmarkdown
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
