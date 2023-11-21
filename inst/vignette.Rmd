@@ -237,12 +237,16 @@ mtext("C, adaptive weights", side = 3, line = 0, adj = 0)
 
 ```
 
+
+# Session information
+
+```{r}
+SessionInfo()
+```
+
+
 # Reference
 
 1, Wang, Shuo, and Junyan Lu. "Detect influential points of feature rankings." arXiv preprint arXiv:2303.10516 (2023).  
 2, Miller, Lance D., et al. "An expression signature for p53 status in human breast cancer predicts mutation status, transcriptional effects, and patient survival." Proceedings of the National Academy of Sciences 102.38 (2005): 13550-13555.doi:10.1073pnas.0506230102
 3, Da Pinto Costa, Joaquim; Soares, Carlos (2005): A weighted rank measure of correlation. In Australian & New Zealand Journal of Statistics 47 (4), pp. 515–529.  
-
-
-
-

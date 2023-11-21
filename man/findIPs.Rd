@@ -20,11 +20,11 @@ findIPs(
 \item{y}{Groups or survival object (for cox regression).}
 
 \item{fun}{fun can either be a character or a function. fun should be one of
-the "t.test", "cox", "log2fc", and "kruskal.test" when it is a character.
+the 't.test', 'cox', 'log2fc', and 'kruskal.test' when it is a character.
 \code{findIPs()} incorporates four widely used ranking criteria: t-test,
 univariate cox model, log2fc, and kruskal test, whose outputs are p values
 except log2fc (absolute log2 fold changes). The features would be ordered by
-specifying the argument \code{decreasing}. For instance, if \code{fun = "t.test"},
+specifying the argument \code{decreasing}. For instance, if \code{fun = 't.test'},
 the \code{decreasing = F}, such that features are order by the pvalues of
 t.test in the increasing manner.
 
@@ -37,13 +37,13 @@ decreasingly.}
 
 \item{topN}{the number of important features included for comparison.}
 
-\item{method}{method to summarize rank changes. Both "adaptive" and
-"weightedSpearman" are weighted rank comparison method, but former employs
-the weight that are adaptive to the distribution of rank changes. "unweighted"
+\item{method}{method to summarize rank changes. Both 'adaptive' and
+'weightedSpearman' are weighted rank comparison method, but former employs
+the weight that are adaptive to the distribution of rank changes. 'unweighted'
 denotes a direct comparison of ranks without considering weights.}
 
 \item{nCores}{the number of CPU cores used for parallel running.
-If ncores = NULL, a single core is used.}
+If nCores = NULL, a single core is used.}
 }
 \value{
 \item{kappa}{The weight function's shape is controlled by kappa,
@@ -60,7 +60,10 @@ Here it is re-output for visualization purposes.}
 
 \item{origRankWeighted}{The weighted original ranking}
 
-\item{drop1RankWeighted}{The wieghted leave-one-out rankings}
+\item{drop1RankWeighted}{The weighted leave-one-out rankings}
+
+Of note, the function returns S4 class object, thereby, the results should be
+visited using '@' instead of '$'.
 }
 \description{
 \code{findIPs} employs two important functions: \code{getdrop1ranks} and
@@ -76,16 +79,16 @@ X <- miller05$X
 y <- miller05$y
 
 obj <- findIPs(X, y,
-            fun = "t.test",
-            decreasing = FALSE,
-            topN = 100,
-            method = "adaptive")
+               fun = 't.test',
+               decreasing = FALSE,
+               topN = 100,
+               method = 'adaptive')
 
 par(mfrow = c(1, 3), mar = c(4, 4, 2, 2))
 plotRankScatters(obj, top = TRUE)
-plotAdaptiveWeights(kappa = obj$kappa,
-                    n = nrow(obj$drop1Rank),
-                    type = "line",
+plotAdaptiveWeights(kappa = obj@kappa,
+                    n = nrow(obj@drop1Rank),
+                    type = 'line',
                     ylim = NULL)
 plot(obj, topn = 5, ylim = NULL)
 

@@ -12,7 +12,7 @@ plotAdaptiveWeights(kappa, n, type = c("line", "points"), ylim = NULL)
 \item{n}{the length list.}
 
 \item{type}{draw line or points. Both line and points will be plotted if
-type = c("line", "points").}
+type = c('line', 'points').}
 
 \item{ylim}{y coordinates ranges.}
 }
@@ -23,7 +23,7 @@ and the list length (n).
 \examples{
 
 par(mfrow = c(1, 2), mar = c(4, 4, 2, 2))
-plotAdaptiveWeights(kappa = 0.01, n = 100, type = "line", ylim = c(0, 0.025))
-plotAdaptiveWeights(kappa = 0.02, n = 100, type = "line", ylim = c(0, 0.025))
+plotAdaptiveWeights(kappa = 0.01, n = 100, type = 'line', ylim = c(0, 0.025))
+plotAdaptiveWeights(kappa = 0.02, n = 100, type = 'line', ylim = c(0, 0.025))
 
 }

@@ -22,9 +22,9 @@ a case removed.}
 \item{topN}{the top n features in origRank will be used for rank comparison.
 If null, include all features.}
 
-\item{method}{method to summarize rank changes. Both "adaptive" and
-"weightedSpearman" are weighted rank comparison method, but former employs
-the weight that are adaptive to the distribution of rank changes. "unweighted"
+\item{method}{method to summarize rank changes. Both 'adaptive' and
+'weightedSpearman' are weighted rank comparison method, but former employs
+the weight that are adaptive to the distribution of rank changes. 'unweighted'
 denotes a direct comparison of ranks without considering weights.}
 
 \item{...}{other arguments}
@@ -43,10 +43,13 @@ Here it is re-output for visualization purposes.}
 \item{drop1Rank}{The leave-one-out rankings. }
 
 \item{origRankWeighted}{The weighted original ranking.
-origRankWeighted will be returned when method = "adaptive". }
+origRankWeighted will be returned when method = 'adaptive'. }
 
 \item{drop1RankWeighted}{The weighted leave-one-out rankings.
-drop1RankWeighted will be returned when method = "adaptive". }
+drop1RankWeighted will be returned when method = 'adaptive'. }
+
+Of note, the function returns S4 class object, thereby, the results should be
+visited using '@' instead of '$'.
 }
 \description{
 This function measures the overall rank changes due to case deletion.
@@ -60,14 +63,14 @@ data(miller05)
 X <- miller05$X
 y <- miller05$y
 obj <- getdrop1ranks(X, y,
-                     fun = "t.test",
+                     fun = 't.test',
                      decreasing = FALSE,
                      topN = 100)
 
 rks <- sumRanks(origRank = obj$origRank,
                 drop1Rank = obj$drop1Rank,
                 topN = 100,
-                method = "adaptive")
+                method = 'adaptive')
 
 plot(rks, topn = 5, ylim = NULL)
 

@@ -10,11 +10,11 @@
 #' @param X A data matrix, with rows being the variables and columns being samples.
 #' @param y Groups or survival object (for cox regression).
 #' @param fun fun can either be a character or a function. fun should be one of
-#' the "t.test", "cox", "log2fc", and "kruskal.test" when it is a character.
+#' the 't.test', 'cox', 'log2fc', and 'kruskal.test' when it is a character.
 #' \code{findIPs()} incorporates four widely used ranking criteria: t-test,
 #' univariate cox model, log2fc, and kruskal test, whose outputs are p values
 #' except log2fc (absolute log2 fold changes). The features would be ordered by
-#' specifying the argument \code{decreasing}. For instance, if \code{fun = "t.test"},
+#' specifying the argument \code{decreasing}. For instance, if \code{fun = 't.test'},
 #' the \code{decreasing = F}, such that features are order by the pvalues of
 #' t.test in the increasing manner.
 #'
@@ -24,12 +24,12 @@
 #' p-value should be ordered increasingly, while fold-change should be ordered
 #' decreasingly.
 #' @param topN the number of important features included for comparison.
-#' @param method method to summarize rank changes. Both "adaptive" and
-#' "weightedSpearman" are weighted rank comparison method, but former employs
-#' the weight that are adaptive to the distribution of rank changes. "unweighted"
+#' @param method method to summarize rank changes. Both 'adaptive' and
+#' 'weightedSpearman' are weighted rank comparison method, but former employs
+#' the weight that are adaptive to the distribution of rank changes. 'unweighted'
 #' denotes a direct comparison of ranks without considering weights.
 #' @param nCores the number of CPU cores used for parallel running.
-#' If ncores = NULL, a single core is used.
+#' If nCores = NULL, a single core is used.
 #'
 #' @return \item{kappa}{The weight function's shape is controlled by kappa,
 #' which ranges from 0 to 1. Weighted rank changes are calculated using kappa,
@@ -40,7 +40,11 @@
 #' Here it is re-output for visualization purposes.}
 #' @return \item{drop1Rank}{The leave-one-out rankings. }
 #' @return \item{origRankWeighted}{The weighted original ranking}
-#' @return \item{drop1RankWeighted}{The wieghted leave-one-out rankings}
+#' @return \item{drop1RankWeighted}{The weighted leave-one-out rankings}
+#'
+#' Of note, the function returns S4 class object, thereby, the results should be
+#' visited using '@' instead of '$'.
+#'
 #' @import survival
 #' @import BiocParallel
 #' @importFrom stats sd t.test
@@ -53,41 +57,30 @@
 #' y <- miller05$y
 #'
 #' obj <- findIPs(X, y,
-#'             fun = "t.test",
-#'             decreasing = FALSE,
-#'             topN = 100,
-#'             method = "adaptive")
+#'                fun = 't.test',
+#'                decreasing = FALSE,
+#'                topN = 100,
+#'                method = 'adaptive')
 #'
 #' par(mfrow = c(1, 3), mar = c(4, 4, 2, 2))
 #' plotRankScatters(obj, top = TRUE)
-#' plotAdaptiveWeights(kappa = obj$kappa,
-#'                     n = nrow(obj$drop1Rank),
-#'                     type = "line",
+#' plotAdaptiveWeights(kappa = obj@kappa,
+#'                     n = nrow(obj@drop1Rank),
+#'                     type = 'line',
 #'                     ylim = NULL)
 #' plot(obj, topn = 5, ylim = NULL)
 #'
 
-findIPs <- function(X, y,
-                    fun = c("t.test", "cox", "log2fc", "kruskal.test"),
-                    decreasing = FALSE,
-                    topN = 100,
-                    method = c("adaptive", "weightedSpearman", "unweighted"),
-                    nCores = NULL){
+findIPs <- function(X, y, fun = c("t.test", "cox", "log2fc", "kruskal.test"), decreasing = FALSE,
+    topN = 100, method = c("adaptive", "weightedSpearman", "unweighted"), nCores = NULL) {
 
-  # derive original ranking and leave-one-out rankings
-  obj <- getdrop1ranks(X, y,
-                       fun = fun,
-                       decreasing = decreasing,
-                       topN = 100,
-                       nCores = nCores)
+    # derive original ranking and leave-one-out rankings
+    obj <- getdrop1ranks(X, y, fun = fun, decreasing = decreasing, topN = 100, nCores = nCores)
 
-  # calculate the influential scores for each observatoin
-  out <- sumRanks(obj$origRank,
-                  obj$drop1Rank,
-                  topN = topN,
-                  method = method)
+    # calculate the influential scores for each observatoin
+    out <- sumRanks(obj$origRank, obj$drop1Rank, topN = topN, method = method)
 
-  return(out)
+    return(out)
 
 }
 

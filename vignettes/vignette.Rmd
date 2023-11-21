@@ -1,5 +1,5 @@
 ---
-title: "findIPs: Detect Influential Obseravation for Feature Rankings"
+title: "findIPs: Detect Influential Observation for Feature Rankings"
 author:
 - name: Shuo Wang
   affiliation: 
@@ -123,7 +123,7 @@ The *plotAdaptiveWeights()* function aims to Visualize weight function if adapti
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 3, the weight function of the adaptive weights"}
 par(mar = c(4, 4, 2, 2))
-plotAdaptiveWeights(results.ipsr$kappa, n = 100, type = "line")
+plotAdaptiveWeights(results.ipsr@kappa, n = 100, type = "line")
 
 ```
 
@@ -144,7 +144,7 @@ plot(results.cox)
 
 # Customize the rank criteria
 
-In addtion to the provided ranking criteria in *findIPs()* or *sumRanks()*, which includes "t.test", "cox", "log2fc", and "kruskal.test". We can also rank features based on a specified rank criterion. To this end, we can pass a function to the *fun* argument.  The function should take *x* and *y* as inputs and output the rank criterion, such as p-values.
+In addition to the provided ranking criteria in *findIPs()* or *sumRanks()*, which includes "t.test", "cox", "log2fc", and "kruskal.test". We can also rank features based on a specified rank criterion. To this end, we can pass a function to the *fun* argument.  The function should take *x* and *y* as inputs and output the rank criterion, such as p-values.
 
 As an example, we can rank features based on the p-values obtained from the kruskal.test. We can either specify *fun = "kruskal.test"*, as this test has been implemented in the package, or define our own function passing to *getdrop1ranks*. Both methods produce the same results.
 
@@ -200,7 +200,7 @@ mtext("C, adaptive weights", side = 3, line = 0, adj = 0)
 3, Da Pinto Costa, Joaquim; Soares, Carlos (2005): A weighted rank measure of correlation. In Australian & New Zealand Journal of Statistics 47 (4), pp. 515–529.  
 
 
-# Session info
+# Session info {.unnumbered}
 ```{r, echo = F}
 sessionInfo()
 ```

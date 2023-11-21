@@ -1,4 +1,3 @@
-
 library(testthat)
 library(findIPs)
 
@@ -101,16 +100,4 @@ test_that("test ipsr",{
 test_that("test ipsr for survival outcomes (ranked by univariate cox)",{
   expect_equal(expected.cox.adaptive.ipsr, observed.cox.adaptive.ipsr)
 })
-
-
-
-
-
-
-
-
-
-
-
-
 

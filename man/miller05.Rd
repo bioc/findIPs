@@ -22,8 +22,8 @@ data(miller05)
 }
 \references{
 Miller, Lance D., et al.
-"An expression signature for p53 status in human breast cancer predicts
-mutation status, transcriptional effects, and patient survival."
+'An expression signature for p53 status in human breast cancer predicts
+mutation status, transcriptional effects, and patient survival.'
 Proceedings of the National Academy of Sciences 102.38 (2005):
 13550-13555.doi:10.1073pnas.0506230102
 }

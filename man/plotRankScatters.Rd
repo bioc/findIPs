@@ -30,13 +30,13 @@ X <- miller05$X
 y <- miller05$y
 
 obj <- getdrop1ranks(X, y,
-                     fun = "t.test",
+                     fun = 't.test',
                      decreasing = FALSE,
                      topN = 100)
 rks <- sumRanks(origRank = obj$origRank,
                 drop1Rank = obj$drop1Rank,
                 topN = 100,
-                method = "adaptive")
+                method = 'adaptive')
 plotRankScatters(rks)
 
 }

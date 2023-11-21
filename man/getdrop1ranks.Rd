@@ -19,11 +19,11 @@ getdrop1ranks(
 \item{y}{Groups or survival object (for cox regression)}
 
 \item{fun}{fun can either be a character or a function. fun should be one of
-the "t.test", "cox", "log2fc", and "kruskal.test" when it is a character.
+the 't.test', 'cox', 'log2fc', and 'kruskal.test' when it is a character.
 \code{findIPs()} incorporates four widely used ranking criteria: t-test,
 univariate cox model, log2fc, and kruskal test, whose outputs are p values
 except log2fc (absolute log2 fold changes). The features would be ordered by
-specifying the argument \code{decreasing}. For instance, if \code{fun = "t.test"},
+specifying the argument \code{decreasing}. For instance, if \code{fun = 't.test'},
 the \code{decreasing = F}, such that features are order by the pvalues of
 t.test in the increasing manner.
 
@@ -55,13 +55,13 @@ data(miller05)
 X <- miller05$X
 y <- miller05$y
 obj <- getdrop1ranks(X, y,
-                     fun = "t.test",
+                     fun = 't.test',
                      decreasing = FALSE,
                      topN = 100)
 rks <- sumRanks(origRank = obj$origRank,
                 drop1Rank = obj$drop1Rank,
                 topN = 100,
-                method = "adaptive")
+                method = 'adaptive')
 plot(rks, topn = 5, ylim = NULL)
 
 }
