@@ -16,6 +16,9 @@ type = c('line', 'points').}
 
 \item{ylim}{y coordinates ranges.}
 }
+\value{
+plot based on basic graph
+}
 \description{
 Plot the weight function for the adaptive weights with given kappa
 and the list length (n).

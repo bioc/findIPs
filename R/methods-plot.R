@@ -7,8 +7,9 @@
 #' @slot origRankWeighted a numeric vector. The weighted original ranking.
 #' @slot drop1RankWeighted a matrix. Weighted leave-one-out rankings.
 #' @description ipsAdaptive is an S4 class object. The object is the output of
-#' the \code{rank.compare} or \code{findIPs} function, when "adaptive" is selected
-#' for method.
+#' the \code{rank.compare} or \code{findIPs} function, when "adaptive" is
+#' selected for method.
+#' @return S4 class object.
 #' @name ipsAdaptive
 #'
 setClass(
@@ -31,6 +32,7 @@ setClass(
 #' @description ipsOthers is an S4 class object. The object is the output of
 #' the \code{rank.compare} or \code{findIPs} function, when "weightedSpearman"
 #' or "unweighted" is selected.
+#' @return S4 class object.
 #' @name ipsOthers
 #'
 setClass(
@@ -47,12 +49,15 @@ setClass(
 #'
 #' @description
 #' Visualize influential score using lollipop plot. The function is an S4 class
-#' method for object obtained from \code{rank.compare} or \code{findIPs} function.
+#' method for object obtained from \code{rank.compare} or \code{findIPs}
+#' function.
 #'
-#' @param x the object obtained from \code{rank.compare} or \code{findIPs} function
+#' @param x the object obtained from \code{rank.compare} or \code{findIPs}
+#' function.
 #' @param topn the top n most influential points to be labelled in the plot.
 #' @param ylim y coordinates ranges
 #' @param ... other arguments
+#' @return plot based on basic graph
 #' @examples
 #'
 #' data(miller05)
@@ -95,8 +100,9 @@ setMethod(
 #' @description Plot method for S4 class ipsOthers.
 #' @param x An object of S4 class ipsOthers.
 #' @param topn the top n most influential points to be labelled in the plot.
-#' @param ylim y coordinates ranges
+#' @param ylim y coordinates ranges.
 #' @param ... Additional parameters.
+#' @return plot based on basic graph.
 
 setMethod(
 

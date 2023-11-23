@@ -7,16 +7,17 @@
 #' taken to \code{sumRanks}, which computes the overall rank changes for
 #' each observation, indicating their influence on feature rankings.
 #'
-#' @param X A data matrix, with rows being the variables and columns being samples.
+#' @param X A data matrix, with rows being the variables and columns being
+#' samples.
 #' @param y Groups or survival object (for cox regression).
 #' @param fun fun can either be a character or a function. fun should be one of
 #' the 't.test', 'cox', 'log2fc', and 'kruskal.test' when it is a character.
 #' \code{findIPs()} incorporates four widely used ranking criteria: t-test,
 #' univariate cox model, log2fc, and kruskal test, whose outputs are p values
 #' except log2fc (absolute log2 fold changes). The features would be ordered by
-#' specifying the argument \code{decreasing}. For instance, if \code{fun = 't.test'},
-#' the \code{decreasing = F}, such that features are order by the pvalues of
-#' t.test in the increasing manner.
+#' specifying the argument \code{decreasing}. For instance, if
+#' \code{fun = 't.test'}, the \code{decreasing = F}, such that features are
+#' order by the pvalues of t.test in the increasing manner.
 #'
 #' fun can also be a function to obtain ranking criteria with x and y being the
 #' only input and the ranking criteria, such as p-values being the only output.
@@ -26,8 +27,9 @@
 #' @param topN the number of important features included for comparison.
 #' @param method method to summarize rank changes. Both 'adaptive' and
 #' 'weightedSpearman' are weighted rank comparison method, but former employs
-#' the weight that are adaptive to the distribution of rank changes. 'unweighted'
-#' denotes a direct comparison of ranks without considering weights.
+#' the weight that are adaptive to the distribution of rank changes.
+#' 'unweighted' denotes a direct comparison of ranks without considering
+#' weights.
 #' @param nCores the number of CPU cores used for parallel running.
 #' If nCores = NULL, a single core is used.
 #'
@@ -71,16 +73,24 @@
 #' plot(obj, topn = 5, ylim = NULL)
 #'
 
-findIPs <- function(X, y, fun = c("t.test", "cox", "log2fc", "kruskal.test"), decreasing = FALSE,
-    topN = 100, method = c("adaptive", "weightedSpearman", "unweighted"), nCores = NULL) {
+findIPs <- function(X, y,
+                    fun = c("t.test", "cox", "log2fc", "kruskal.test"),
+                    decreasing = FALSE,
+                    topN = 100,
+                    method = c("adaptive", "weightedSpearman", "unweighted"),
+                    nCores = NULL) {
 
-    # derive original ranking and leave-one-out rankings
-    obj <- getdrop1ranks(X, y, fun = fun, decreasing = decreasing, topN = 100, nCores = nCores)
+  # derive original ranking and leave-one-out rankings
+  obj <- getdrop1ranks(X, y,
+                       fun = fun,
+                       decreasing = decreasing,
+                       topN = 100,
+                       nCores = nCores)
 
-    # calculate the influential scores for each observatoin
-    out <- sumRanks(obj$origRank, obj$drop1Rank, topN = topN, method = method)
+  # calculate the influential scores for each observatoin
+  out <- sumRanks(obj$origRank, obj$drop1Rank, topN = topN, method = method)
 
-    return(out)
+  return(out)
 
 }
 

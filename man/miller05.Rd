@@ -10,9 +10,13 @@ a list
 \usage{
 data(miller05)
 }
+\value{
+miller05 data, a list containing 1000 genes and binary and survival
+response.
+}
 \description{
-miller05 is gene expression data with 1000 genes randomly sampled from 22283 genes
-and 236 samples since removing the case with missing response.
+miller05 is gene expression data with 1000 genes randomly sampled from
+22283 genes and 236 samples since removing the case with missing response.
 The data has binary and survival response. The binary response
 contains 58 case with p53 mutant and 193 wild type mutant. The survival
 response has a total of 55 events.

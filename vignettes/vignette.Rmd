@@ -19,28 +19,52 @@ header-includes:
     - \doublespacing
     
 vignette: >
-  %\VignetteIndexEntry{"findIPs: Detect Influential Obseravation for Feature Rankings"}
+  %\VignetteIndexEntry{"findIPs: Detect Influential Obseravation for Feature 
+  Rankings"}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 # Introduction
 
-Feature rankings are important in analyzing high-throughput data, particularly for bioinformatics studies. These rankings are typically obtained by calculating the marginal correlations with the outcomes. The ordered feature list reflects the importance of features, which plays a vital role in guiding subsequent research. For instance, researchers usually focus on a small subset of important features that are associated with research objectives. However, the feature ranking can be distorted by a single case. The case exerts abnormal influence on the feature ranking is termed as influential points (IPs). The presence of IPs renders the feature ranking unreliable, consequently affecting the subsequent analysis based on feature rankings.
+Feature rankings are important in analyzing high-throughput data, particularly 
+for bioinformatics studies. These rankings are typically obtained by calculating
+the marginal correlations with the outcomes. The ordered feature list reflects 
+the importance of features, which plays a vital role in guiding subsequent 
+research. For instance, researchers usually focus on a small subset of important
+features that are associated with research objectives. However, the feature 
+ranking can be distorted by a single case. The case exerts abnormal influence 
+on the feature ranking is termed as influential points (IPs). The presence of 
+IPs renders the feature ranking unreliable, consequently affecting the 
+subsequent analysis based on feature rankings.
 
-The *findIPs* R package is specifically designed to detect IPs for feature rankings. The method utilized in this package is based on the leave-one-out strategy, which involves comparing the rank difference between the original ranking and a new ranking that is obtained by removing a single observation (1). T new rankings are  leave-one-out rankings. The rank difference obtained through this comparison helps to determine the influence of the deleted observation.
+The *findIPs* R package is specifically designed to detect IPs for feature 
+rankings. The method utilized in this package is based on the leave-one-out 
+strategy, which involves comparing the rank difference between the original 
+ranking and a new ranking that is obtained by removing a single observation (1). 
+The  new rankings are leave-one-out rankings. The rank difference obtained 
+through this comparison helps to determine the influence of the deleted 
+observation.
 
 The whole process can be divided into three steps,  
 
-Step 1, generate the original and leave-one-out rankings using a feature ranking method, such as t-test. A dataset with n cases will result in one original ranking and n leave-one-out feature rankings.
+Step 1, generate the original and leave-one-out rankings using a feature 
+ranking method, such as t-test. A dataset with n cases will result in one 
+original ranking and n leave-one-out feature rankings.
 
-Step 2, calculate rank changes. It is advisable to use top-prioritized weights when comparing ranks.
+Step 2, calculate rank changes. It is advisable to use top-prioritized 
+weights when comparing ranks.
 
-Step 3, calculate the cumulative rank changes for each observation. A diagnostic check is also required to identify any potential influential points. 
+Step 3, calculate the cumulative rank changes for each observation. A diagnostic
+check is also required to identify any potential influential points. 
 
 # Dataset
 
-The *findIPs* package includes the miller05 microarray data (2). The data contains 236 samples and 1,000 genes. It has two types of responses: binary and survival. The binary response is classified based on the p53 mutation: 58 cases with a p53 mutant and 193 cases with the wild-type p53 mutation. The survival response is associated with a total of 55 recorded events. 
+The *findIPs* package includes the miller05 microarray data (2). The data 
+contains 236 samples and 1,000 genes. It has two types of responses: binary 
+and survival. The binary response is classified based on the p53 mutation: 58 
+cases with a p53 mutant and 193 cases with the wild-type p53 mutation. The 
+survival response is associated with a total of 55 recorded events. 
 
 ```{r}
 library(findIPs)
@@ -52,7 +76,14 @@ surv <- miller05$surv
 
 # Detect IPs using *getdrop1ranks()* and *sumRanks()*  
 
-We use a simple example where features are ranked based on t.test to demonstrate the use of *findIPs* package for IPs detection. We use *getdrop1ranks()* to derive the original ranking and leave-one-out rankings. Features are simply ranked according to the p.values of t.test. Of note, the rank criteria is the p.value if *fun = "t.test"*. P.values are ranked in ascending order by specifying *decreasing = FALSE*. We select the top 100 important features in the original ranking. The function returns an object containing a vector of original ranking (origRank) and a matrix of leave-one-out rankings (drop1Rank).
+We use a simple example where features are ranked based on t.test to demonstrate 
+the use of *findIPs* package for IPs detection. We use *getdrop1ranks()* to 
+derive the original ranking and leave-one-out rankings. Features are simply 
+ranked according to the p.values of t.test. Of note, the rank criteria is the 
+p.value if *fun = "t.test"*. P.values are ranked in ascending order by 
+specifying *decreasing = FALSE*. We select the top 100 important features in 
+the original ranking. The function returns an object containing a vector of 
+original ranking (origRank) and a matrix of leave-one-out rankings (drop1Rank).
 
 ```{r}
 
@@ -64,7 +95,16 @@ str(obj)
 
 ```
 
-After obtaining the original ranking and leave-one-out rankings using the *getdrop1ranks()* function, we use the *sumRanks()* function to compute the distance between them. This function provides three methods for comparing ranks: unweighted, weighted Spearman, and method with adaptive weights. The unweighted method directly compares the ranks and assumes that all ranks have equal importance. However, this is not always the case as the top-ranked methods are usually more important. The weighted Spearman and adaptive weights methods address this issue by emphasizing the importance of the top-ranked methods (3). The adaptive weights method can further adjust the weights based on the distribution of rank changes in the data.
+After obtaining the original ranking and leave-one-out rankings using the 
+*getdrop1ranks()* function, we use the *sumRanks()* function to compute the 
+distance between them. This function provides three methods for comparing ranks: 
+unweighted, weighted Spearman, and method with adaptive weights. The unweighted 
+method directly compares the ranks and assumes that all ranks have equal 
+importance. However, this is not always the case as the top-ranked methods are 
+usually more important. The weighted Spearman and adaptive weights methods 
+address this issue by emphasizing the importance of the top-ranked methods (3). 
+The adaptive weights method can further adjust the weights based on the 
+distribution of rank changes in the data.
 
 
 ```{r}
@@ -78,20 +118,26 @@ str(results)
 
 ```
 
-The outputs of *sumRanks()* are diverse across the selected methods. For *method = "adaptive"*, *sumRanks()* returns a list with the following elements:
+The outputs of *sumRanks()* are diverse across the selected methods. For 
+*method = "adaptive"*, *sumRanks()* returns a list with the following elements:
 
 1, kappa, the shape parameter of the adaptive weights method;  
-2, score, the accumulated weighted rank changes, reflecting the influence of each sample;
-3, origRank, the original ranking;
-4, drop1Rank, the leave-one-out rankings;  
+2, score, the accumulated weighted rank changes, reflecting the influence of 
+each sample;  
+3, origRank, the original ranking;  
+4, drop1Rank, the leave-one-out rankings;   
 5, origRankWeighted, weighted original ranking;  
-6, drop1RankWeighted, weighted leave-one-out rankings. 
+6, drop1RankWeighted, weighted leave-one-out rankings.  
 
-However, if the method is "weightedSpearman" or "unweighted", the function will only return three elements: "score", "origRank", and "drop1RankWeighted". The elements "kappa", "origRankWeighted", and "drop1RankWeighted" will not be returned.
+However, if the method is "weightedSpearman" or "unweighted", the function will 
+only return three elements: "score", "origRank", and "drop1RankWeighted". The 
+elements "kappa", "origRankWeighted", and "drop1RankWeighted" will not be 
+returned.
 
 # Use *findIPs()* to detect IPs in one-step
 
-*findIPs()* combines *getdrop1ranks()* and *sumRanks()* into one step. The output is identical to using the two-step process.
+*findIPs()* combines *getdrop1ranks()* and *sumRanks()* into one step. The 
+output is identical to using the two-step process.
 
 ```{r}
 results.ipsr <- findIPs(X, y, 
@@ -103,7 +149,14 @@ identical(results, results.ipsr)
 ```
 # Results visualization 
 
-*findIPs* package offers three visualization functions: *plot.ips()*, *plotRankScatters()*, and *plotAdaptiveWeights()*. *plot.ips()* can directly utilize the output of *findIPs()* or *sumRanks()* to create a lollipop plot that displays the influence of each case. In Figure 1, we can see that the observation 68 (obs68) seems to be more influential on the final results. However, the difference between obs68 and the other observations is not that distinct, indicating a lower possibility of the presence of an influential observation.
+*findIPs* package offers three visualization functions: *plot.ips()*, 
+*plotRankScatters()*, and *plotAdaptiveWeights()*. *plot.ips()* can directly 
+utilize the output of *findIPs()* or *sumRanks()* to create a lollipop plot that 
+displays the influence of each case. In Figure 1, we can see that the 
+observation 68 (obs68) seems to be more influential on the final results. 
+However, the difference between obs68 and the other observations is not that 
+distinct, indicating a lower possibility of the presence of an influential 
+observation.
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 1, the influence scores for each observation"}
 par(mar = c(4, 4, 2, 2))
@@ -111,7 +164,12 @@ plot(results.ipsr, topn = 5, ylim = c(0, 8))
 
 ```
 
-In addition to the lollipop, *findIPs* also provides a simple visualization function *plotRankScatters()* that exhibits the distribution of rank changes using a scatter plot (Figure 2). Alike *plot.ips()*, *plotRankScatters()* simply uses the output of *findIPs()* or *sumRanks()*. According to Figure 2, we can observe more rank changes in the tail side, but less changes in the head. The black points denote the rank changes caused by the most influential case.  
+In addition to the lollipop, *findIPs* also provides a simple visualization 
+function *plotRankScatters()* that exhibits the distribution of rank changes 
+using a scatter plot (Figure 2). Alike *plot.ips()*, *plotRankScatters()* simply 
+uses the output of *findIPs()* or *sumRanks()*. According to Figure 2, we can 
+observe more rank changes in the tail side, but less changes in the head. The 
+black points denote the rank changes caused by the most influential case.  
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 2, the distribution of rank changes"}
 par(mar = c(4, 4, 2, 2))
@@ -119,7 +177,13 @@ plotRankScatters(results.ipsr)
 
 ```
 
-The *plotAdaptiveWeights()* function aims to Visualize weight function if adaptive weights are used for rank comparison, that is *method = "adaptive"* for *findIPs()* or *sumRanks()*. The argument *kappa* refers to the shape parameter of the weight function. Here, the optimized kappa is 0.023 (Figure 3). n is the length of the feature list. We select the top 100 features, hence, *n = 100*. We can observe that more weights are allocated to the top-ranked features.  
+The *plotAdaptiveWeights()* function aims to Visualize weight function if 
+adaptive weights are used for rank comparison, that is *method = "adaptive"* 
+for *findIPs()* or *sumRanks()*. The argument *kappa* refers to the shape 
+parameter of the weight function. Here, the optimized kappa is 0.023 (Figure 3). 
+n is the length of the feature list. We select the top 100 features, hence, 
+*n = 100*. We can observe that more weights are allocated to the top-ranked 
+features.  
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 3, the weight function of the adaptive weights"}
 par(mar = c(4, 4, 2, 2))
@@ -129,7 +193,9 @@ plotAdaptiveWeights(results.ipsr@kappa, n = 100, type = "line")
 
 # Use findIPs in survival data
 
-For survival analysis, we offer the option to rank features using univariate Cox model by setting *fun = "cox"*. The features are ranked in ascending order based on their P-values.
+For survival analysis, we offer the option to rank features using univariate 
+Cox model by setting *fun = "cox"*. The features are ranked in ascending order 
+based on their P-values.
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 4, IPs detection for survival data"}
 par(mar = c(4, 4, 2, 2))
@@ -144,9 +210,16 @@ plot(results.cox)
 
 # Customize the rank criteria
 
-In addition to the provided ranking criteria in *findIPs()* or *sumRanks()*, which includes "t.test", "cox", "log2fc", and "kruskal.test". We can also rank features based on a specified rank criterion. To this end, we can pass a function to the *fun* argument.  The function should take *x* and *y* as inputs and output the rank criterion, such as p-values.
+In addition to the provided ranking criteria in *findIPs()* or *sumRanks()*, 
+which includes "t.test", "cox", "log2fc", and "kruskal.test". We can also rank 
+features based on a specified rank criterion. To this end, we can pass a function 
+to the *fun* argument.  The function should take *x* and *y* as inputs and 
+output the rank criterion, such as p-values.
 
-As an example, we can rank features based on the p-values obtained from the kruskal.test. We can either specify *fun = "kruskal.test"*, as this test has been implemented in the package, or define our own function passing to *getdrop1ranks*. Both methods produce the same results.
+As an example, we can rank features based on the p-values obtained from the 
+kruskal.test. We can either specify *fun = "kruskal.test"*, as this test has 
+been implemented in the package, or define our own function passing to 
+*getdrop1ranks*. Both methods produce the same results.
 
 ```{r}
 fun <- function(x, y){
@@ -155,11 +228,11 @@ fun <- function(x, y){
 
 kruskal.test1 <- getdrop1ranks(X, y, 
                                fun = fun, 
-                               decreasing = F)
+                               decreasing = FALSE)
 
 kruskal.test2 <- getdrop1ranks(X, y, 
                                fun = "kruskal.test", 
-                               decreasing = F)
+                               decreasing = FALSE)
 
 identical(kruskal.test1, kruskal.test2)
 
@@ -167,7 +240,10 @@ identical(kruskal.test1, kruskal.test2)
 
 # The choice of rank comparison methods
 
-*findIPs* provides three rank comparison methods: unweighted, weighted Spearman, and adaptive weights. We recommend using the adaptive weights. Here, we compare the three methods. Weighted Spearman and the adaptive weights method demonstrates similar results. But both are different from the unweighted method. 
+*findIPs* provides three rank comparison methods: unweighted, weighted Spearman, 
+and adaptive weights. We recommend using the adaptive weights. Here, we compare 
+the three methods. Weighted Spearman and the adaptive weights method 
+demonstrates similar results. But both are different from the unweighted method. 
 
 ```{r, fig.width = 9, fig.height = 3, fig.cap = "Figure 5, IPs detection using three rank comparison methods"}
 re.unweighted <- findIPs(X, y, 
@@ -195,12 +271,18 @@ mtext("C, adaptive weights", side = 3, line = 0, adj = 0)
 
 # References {.unnumbered}
 
-1, Wang, Shuo, and Junyan Lu. "Detect influential points of feature rankings." arXiv preprint arXiv:2303.10516 (2023).  
-2, Miller, Lance D., et al. "An expression signature for p53 status in human breast cancer predicts mutation status, transcriptional effects, and patient survival." Proceedings of the National Academy of Sciences 102.38 (2005): 13550-13555.doi:10.1073pnas.0506230102
-3, Da Pinto Costa, Joaquim; Soares, Carlos (2005): A weighted rank measure of correlation. In Australian & New Zealand Journal of Statistics 47 (4), pp. 515–529.  
+1, Wang, Shuo, and Junyan Lu. "Detect influential points of feature rankings." 
+arXiv preprint arXiv:2303.10516 (2023).  
+2, Miller, Lance D., et al. "An expression signature for p53 status in human 
+breast cancer predicts mutation status, transcriptional effects, and patient 
+survival." Proceedings of the National Academy of Sciences 102.38 (2005): 13550-13555.doi:10.1073pnas.0506230102  
+3, Da Pinto Costa, Joaquim; Soares, Carlos (2005): A weighted rank measure of 
+correlation. In Australian & New Zealand Journal of Statistics 47 (4), pp. 
+515–529.  
 
 
 # Session info {.unnumbered}
+
 ```{r, echo = F}
 sessionInfo()
 ```

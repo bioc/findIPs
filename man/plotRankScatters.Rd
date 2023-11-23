@@ -19,6 +19,9 @@ to define the points.}
 \item{top.arg}{a list. Arguments in \code{graphics::points()} can be used
 to define the top points.}
 }
+\value{
+a plot based on basic graphic.
+}
 \description{
 Visualize the unweighted rank changes using scatter plot. The plot displays
 the original ranking and leave-one-out rankings.

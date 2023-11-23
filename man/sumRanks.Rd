@@ -14,7 +14,8 @@ sumRanks(
 }
 \arguments{
 \item{origRank}{vectors, reference rankings. For influential observation
-detection, origRank denotes the original ranking obtained using the whole data.}
+detection, origRank denotes the original ranking obtained using the whole
+data.}
 
 \item{drop1Rank}{matrix or data.frame, Each column is a feature list with
 a case removed.}
@@ -24,8 +25,9 @@ If null, include all features.}
 
 \item{method}{method to summarize rank changes. Both 'adaptive' and
 'weightedSpearman' are weighted rank comparison method, but former employs
-the weight that are adaptive to the distribution of rank changes. 'unweighted'
-denotes a direct comparison of ranks without considering weights.}
+the weight that are adaptive to the distribution of rank changes.
+'unweighted' denotes a direct comparison of ranks without considering
+weights.}
 
 \item{...}{other arguments}
 }
