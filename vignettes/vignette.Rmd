@@ -1,5 +1,5 @@
 ---
-title: "findIPs: Detect Influential Observation for Feature Rankings"
+title: "findIPs: Detect Influential Points for Feature Rankings"
 author:
 - name: Shuo Wang
   affiliation: 
@@ -19,8 +19,7 @@ header-includes:
     - \doublespacing
     
 vignette: >
-  %\VignetteIndexEntry{"findIPs: Detect Influential Obseravation for Feature 
-  Rankings"}
+  %\VignetteIndexEntry{Introduction to package findIPs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
