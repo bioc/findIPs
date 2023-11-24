@@ -3,7 +3,7 @@ The package aims at detecting IPs based on case deletion and quantifies their ef
 
 For full details, please see our preprint: 
 
-Wang, Shuo, and Junyan Lu. "Detect influential points of feature rankings." arXiv preprint arXiv:2303.10516 (2023).
+Wang Shuo, and Junyan Lu. "Detect influential points of feature rankings." arXiv preprint arXiv:2303.10516 (2023).
 
 # Installation
 
