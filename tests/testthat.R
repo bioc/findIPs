@@ -8,7 +8,7 @@ y <- miller05$y
 surv <- miller05$surv
 
 # save expected results
-
+#
 # obj <- getdrop1ranks(X, y,
 #                      fun = "t.test",
 #                      decreasing = FALSE,
@@ -100,4 +100,7 @@ test_that("test ipsr",{
 test_that("test ipsr for survival outcomes (ranked by univariate cox)",{
   expect_equal(expected.cox.adaptive.ipsr, observed.cox.adaptive.ipsr)
 })
+
+
+
 

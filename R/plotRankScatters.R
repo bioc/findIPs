@@ -1,3 +1,4 @@
+#'
 #' Visualize the unweighted rank changes
 #'
 #' @description
@@ -39,11 +40,11 @@ plotRankScatters <- function(obj,
                              points.arg = list(),
                              top.arg = list()) {
 
-  # get origRank and drop1Rank
-  origRank <- obj@origRank
-  drop1Rank <- obj@drop1Rank
+  ## get origRank and drop1Rank
+  origRank <- obj$origRank
+  drop1Rank <- obj$drop1Rank
 
-  # combine the rank changes in the leave-1-out matrix
+  ## combine the rank changes in the leave-1-out matrix
   combR <- c()
   for (i in seq_len(ncol(drop1Rank))) {
     combR <- rbind(combR, cbind(seq_len(nrow(drop1Rank)),
@@ -51,25 +52,25 @@ plotRankScatters <- function(obj,
   }
   colnames(combR) <- c("y", "x")
 
-  # set color for points
+  ## set color for points
   if (!"col" %in% names(points.arg))
     points.arg$col <- ifelse(top, "grey", "black")
 
-  # points argument
+  ## points argument
   points.arg <- c(points.arg, list(x = combR[, "x"], y = combR[, "y"],
                                    cex = 0.8, pch = 19, xlab = "", ylab = ""))
 
-  # remove duplicated arguments, e.g., pch is set twice
+  ## remove duplicated arguments, e.g., pch is set twice
   points.arg <- points.arg[!duplicated(names(points.arg))]
 
   do.call("plot", points.arg)
 
-  # plot top points
+  ## plot top points
   if (top) {
-    ord <- order(obj@score, decreasing = TRUE)[1]
+    ord <- order(obj$score, decreasing = TRUE)[1]
     top.arg <- c(top.arg, list(x = seq_len(nrow(drop1Rank)),
                                y = drop1Rank[ , ord], cex = 0.8, pch = 19))
-    # remove duplicated arguments, e.g., pch is set twice
+    ## remove duplicated arguments, e.g., pch is set twice
     top.arg <- top.arg[!duplicated(names(top.arg))]
 
     do.call("points", top.arg)

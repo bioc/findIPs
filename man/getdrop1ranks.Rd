@@ -19,8 +19,8 @@ samples.}
 
 \item{y}{Groups or survival object (for cox regression)}
 
-\item{fun}{fun can either be a character or a function. fun should be one of
-the 't.test', 'cox', 'log2fc', and 'kruskal.test' when it is a character.
+\item{fun}{\emph{fun} can either be a character or a function. \emph{fun} should be one
+of the 't.test', 'cox', 'log2fc', and 'kruskal.test' when it is a character.
 \code{findIPs()} incorporates four widely used ranking criteria: t-test,
 univariate cox model, log2fc, and kruskal test, whose outputs are p values
 except log2fc (absolute log2 fold changes). The features would be ordered by
@@ -28,8 +28,9 @@ specifying the argument \code{decreasing}. For instance,
 if \code{fun = 't.test'}, the \code{decreasing = F}, such that features are
 order by the pvalues of t.test in the increasing manner.
 
-fun can also be a function to obtain ranking criteria with x and y being the
-only input and the ranking criteria, such as p-values being the only output.}
+\emph{fun} can also be a function to obtain ranking criteria with x and y being
+the only input and the ranking criteria, such as p-values being the only
+output.}
 
 \item{decreasing}{logical. How the rank criteria are ordered? For instance,
 p-value should be ordered increasingly, while fold-change should be ordered
@@ -63,6 +64,6 @@ rks <- sumRanks(origRank = obj$origRank,
                 drop1Rank = obj$drop1Rank,
                 topN = 100,
                 method = 'adaptive')
-plot(rks, topn = 5, ylim = NULL)
+plotIPs(rks, topn = 5, ylim = NULL)
 
 }

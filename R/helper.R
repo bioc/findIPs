@@ -1,5 +1,5 @@
 
-# function used in S4 class plot
+## function used in plotIPs
 
 lollipop <- function(x, y, topn = 5, ylim = NULL) {
 

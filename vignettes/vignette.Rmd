@@ -136,7 +136,7 @@ returned.
 # Use *findIPs()* to detect IPs in one-step
 
 *findIPs()* combines *getdrop1ranks()* and *sumRanks()* into one step. The 
-output is identical to using the two-step process.
+output is identical to that using the two-step process.
 
 ```{r}
 results.ipsr <- findIPs(X, y, 
@@ -148,8 +148,8 @@ identical(results, results.ipsr)
 ```
 # Results visualization 
 
-*findIPs* package offers three visualization functions: *plot.ips()*, 
-*plotRankScatters()*, and *plotAdaptiveWeights()*. *plot.ips()* can directly 
+*findIPs* package offers three visualization functions: *plotIPs()*, 
+*plotRankScatters()*, and *plotAdaptiveWeights()*. *plotIPs()* can directly 
 utilize the output of *findIPs()* or *sumRanks()* to create a lollipop plot that 
 displays the influence of each case. In Figure 1, we can see that the 
 observation 68 (obs68) seems to be more influential on the final results. 
@@ -159,13 +159,13 @@ observation.
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 1, the influence scores for each observation"}
 par(mar = c(4, 4, 2, 2))
-plot(results.ipsr, topn = 5, ylim = c(0, 8))
+plotIPs(results.ipsr, topn = 5, ylim = c(0, 8))
 
 ```
 
 In addition to the lollipop, *findIPs* also provides a simple visualization 
 function *plotRankScatters()* that exhibits the distribution of rank changes 
-using a scatter plot (Figure 2). Alike *plot.ips()*, *plotRankScatters()* simply 
+using a scatter plot (Figure 2). Alike *plotIPs()*, *plotRankScatters()* simply 
 uses the output of *findIPs()* or *sumRanks()*. According to Figure 2, we can 
 observe more rank changes in the tail side, but less changes in the head. The 
 black points denote the rank changes caused by the most influential case.  
@@ -186,7 +186,7 @@ features.
 
 ```{r, fig.width = 7, fig.height = 4, fig.cap = "Figure 3, the weight function of the adaptive weights"}
 par(mar = c(4, 4, 2, 2))
-plotAdaptiveWeights(results.ipsr@kappa, n = 100, type = "line")
+plotAdaptiveWeights(results.ipsr$kappa, n = 100, type = "line")
 
 ```
 
@@ -203,7 +203,7 @@ results.cox <- findIPs(X, surv,
                        decreasing = FALSE,
                        method = "adaptive")
 
-plot(results.cox)
+plotIPs(results.cox)
 ```
 
 
@@ -259,11 +259,11 @@ re.adaptive <- findIPs(X, y,
                        method = "adaptive")
 
 par(mfrow = c(1, 3), mar = c(4, 4, 2, 2))
-plot(re.unweighted)
+plotIPs(re.unweighted)
 mtext("A, unweighted", side = 3, line = 0, adj = 0)
-plot(re.weighted)
+plotIPs(re.weighted)
 mtext("B, weighted Spearman", side = 3, line = 0, adj = 0)
-plot(re.adaptive)
+plotIPs(re.adaptive)
 mtext("C, adaptive weights", side = 3, line = 0, adj = 0)
 
 ```

@@ -34,9 +34,6 @@
 #' @return \item{drop1RankWeighted}{The weighted leave-one-out rankings.
 #' drop1RankWeighted will be returned when method = 'adaptive'. }
 #'
-#' Of note, the function returns S4 class object, thereby, the results should be
-#' visited using '@' instead of '$'.
-#'
 #' @examples
 #'
 #' data(miller05)
@@ -52,7 +49,7 @@
 #'                 topN = 100,
 #'                 method = 'adaptive')
 #'
-#' plot(rks, topn = 5, ylim = NULL)
+#' plotIPs(rks, topn = 5, ylim = NULL)
 #'
 #' @importFrom stats optim
 #' @import methods
@@ -62,37 +59,37 @@ sumRanks <- function(origRank, drop1Rank, topN = NULL,
                      method = c("adaptive", "weightedSpearman", "unweighted"),
                      ...) {
 
-  # drop1Rank should be a matrix or data.frame
+  ## drop1Rank should be a matrix or data.frame
   if (!(is.matrix(drop1Rank) | is.data.frame(drop1Rank)))
     stop("drop1Rank should be a matrix or a data.frame")
-  # transfrorm to matrix
+  ## transfrorm to matrix
   drop1Rank <- as.matrix(drop1Rank)
 
-  # check
+  ## check
   if (length(origRank) != nrow(drop1Rank))
     stop("origRank and drop1Rank should be equal in length")
 
-  # select top n features in the reference ranking
+  ## select top n features in the reference ranking
   if (is.null(topN))
     topN <- length(origRank)
   n <- topN
 
-  # features to ranks
+  ## features to ranks
   if (!all(apply(drop1Rank, 2, function(x) setequal(x, origRank))))
     stop("origRank and drop1Rank should contain the same elements")
 
-  # select topn features
+  ## select topn features
   origRank <- origRank[seq_len(topN)]
 
-  # select top n feature in leave-one-out matrix
+  ## select top n feature in leave-one-out matrix
   drop1Rank <- apply(drop1Rank, 2, intersect, y = origRank)
 
-  # get the rank in the leave-one-out matrix
+  ## get the rank in the leave-one-out matrix
   drop1Rank <- apply(drop1Rank, 2, match, table = origRank)
 
-  # rank changes based on adaptive weights
+  ## rank changes based on adaptive weights
   if (method == "adaptive") {
-    # combine the rank changes in leave-1-out matrix
+    ## combine the rank changes in leave-1-out matrix
     combR <- c()
     for (i in seq_len(ncol(drop1Rank))) {
       combR <- rbind(combR, cbind(seq_len(nrow(drop1Rank)),
@@ -100,11 +97,11 @@ sumRanks <- function(origRank, drop1Rank, topN = NULL,
     }
     colnames(combR) <- c("y", "x")
 
-    # remove non-changed ranks, and transform to data frame
-    # format for optim
+    ## remove non-changed ranks, and transform to data frame
+    ## format for optim
     combR <- as.data.frame(combR[combR[, 1] != combR[, 2], ])
 
-    # weight optimization function
+    ## weight optimization function
     optf <- function(kappa, data, n) {
       # weight function
       wfun <- function(x) {
@@ -118,23 +115,23 @@ sumRanks <- function(origRank, drop1Rank, topN = NULL,
     kappa <- optim(par = 0.01, fn = optf, data = combR, n = n, method = "Brent",
                    lower = 0, upper = 1)$par
 
-    # kappa = 0 or 1 indicates abnormal distribution of rank
-    # changes kappa may not be right for this situation
+    ## kappa = 0 or 1 indicates abnormal distribution of rank
+    ## changes kappa may not be right for this situation
     if (kappa == 0 | kappa == 1)
       warning(bquote(kappa ~ "=" ~ .(m) ~ "may not be right"))
 
-    # weight function
+    ## weight function
     wfun <- function(x) {
       exp(-kappa * x) * (1 - exp(kappa))/(exp(-kappa * n) - 1)
     }
 
     drop1RankWeighted <- apply(drop1Rank, 2, wfun)
 
-    # get weighted ranks with the estimated kappa
+    ## get weighted ranks with the estimated kappa
     if (is.null(colnames(drop1RankWeighted)))
       colnames(drop1RankWeighted) <- seq_len(ncol(drop1Rank))
 
-    # transform origRank to weighted origRank
+    ## transform origRank to weighted origRank
     origRankWeighted <- wfun(seq_len(topN))
 
     score <- apply(drop1RankWeighted, 2, function(x)
@@ -142,7 +139,7 @@ sumRanks <- function(origRank, drop1Rank, topN = NULL,
     score <- score/sd(score)
   }
 
-  # rank changes based on weighted Spearman
+  ## rank changes based on weighted Spearman
   if (method == "unweighted") {
 
     n <- length(origRank)
@@ -152,7 +149,7 @@ sumRanks <- function(origRank, drop1Rank, topN = NULL,
     score <- score/sd(score)
   }
 
-  # weighted Spearman
+  ## weighted Spearman
   if (method == "weightedSpearman") {
 
     n <- length(origRank)
@@ -164,11 +161,10 @@ sumRanks <- function(origRank, drop1Rank, topN = NULL,
   }
 
 
-  # return S4 class objective
+  ## return
   if (method == "adaptive") {
 
-    out <- new("ipsAdaptive",
-               kappa = kappa,
+    out <- list(kappa = kappa,
                score = score,
                origRank = origRank,
                drop1Rank = drop1Rank,
@@ -176,8 +172,7 @@ sumRanks <- function(origRank, drop1Rank, topN = NULL,
                drop1RankWeighted = drop1RankWeighted)
   } else {
 
-    out <- new("ipsOthers",
-               score = score,
+    out <- list(score = score,
                origRank = origRank,
                drop1Rank = drop1Rank)
   }

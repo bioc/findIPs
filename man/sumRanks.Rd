@@ -49,9 +49,6 @@ origRankWeighted will be returned when method = 'adaptive'. }
 
 \item{drop1RankWeighted}{The weighted leave-one-out rankings.
 drop1RankWeighted will be returned when method = 'adaptive'. }
-
-Of note, the function returns S4 class object, thereby, the results should be
-visited using '@' instead of '$'.
 }
 \description{
 This function measures the overall rank changes due to case deletion.
@@ -74,6 +71,6 @@ rks <- sumRanks(origRank = obj$origRank,
                 topN = 100,
                 method = 'adaptive')
 
-plot(rks, topn = 5, ylim = NULL)
+plotIPs(rks, topn = 5, ylim = NULL)
 
 }

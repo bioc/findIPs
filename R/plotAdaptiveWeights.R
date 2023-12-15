@@ -24,27 +24,27 @@ plotAdaptiveWeights <- function(kappa, n,
                                 type = c("line", "points"),
                                 ylim = NULL) {
 
-  # generate x and y
+  ## generate x and y
   x <- seq_len(n)
   y <- exp(-kappa * x) * (1 - exp(kappa))/(exp(-kappa * n) - 1)
 
   if (is.null(ylim))
     ylim <- c(0, max(y))
 
-  # plot
+  ## plot
   plot.new()
   plot.window(xlim = c(1, n), ylim = ylim)
   axis(1)
   axis(2)
   box()
 
-  # plot type
+  ## plot type
   if ("line" %in% type)
     lines(x, y)
   if ("points" %in% type)
     points(x, y)
 
-  # legend and axis labels
+  ## legend and axis labels
   mtext("Ranks", side = 1, line = 2.3)
   mtext("Weighted ranks", side = 2, line = 2.3)
   kappa <- format(round(kappa, 3), nsmall = 3)
