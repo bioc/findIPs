@@ -1,0 +1,12 @@
+
+citHeader("To cite the findIPs package in publications use:")
+
+citEntry(entry = "article",  
+         title = "Detect influential points of feature rankings",
+         author = personList(person(given="Shuo",  family="Wang"),
+                             person(given="Junyan",  family="Lu")),
+  journal = "arXiv preprint",
+  year = "2023",
+  textVersion = paste("Detect influential points of feature rankings",
+                      "Shuo Wang, Junyan Lu",
+                      "arXiv preprint arXiv:2303.10516. 2023 Mar 18"))
