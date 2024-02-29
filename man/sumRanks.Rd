@@ -4,13 +4,7 @@
 \alias{sumRanks}
 \title{Summarize the weighted rank changes caused by case-deletion}
 \usage{
-sumRanks(
-  origRank,
-  drop1Rank,
-  topN = NULL,
-  method = c("adaptive", "weightedSpearman", "unweighted"),
-  ...
-)
+sumRanks(origRank, drop1Rank, topN = NULL, method = "adaptive", ...)
 }
 \arguments{
 \item{origRank}{vectors, reference rankings. For influential observation
@@ -23,7 +17,8 @@ a case removed.}
 \item{topN}{the top n features in origRank will be used for rank comparison.
 If null, include all features.}
 
-\item{method}{method to summarize rank changes. Both 'adaptive' and
+\item{method}{method to summarize rank changes. It should be one of the
+'adaptive', 'weightedSpearman', and 'unweighted'. Both 'adaptive' and
 'weightedSpearman' are weighted rank comparison method, but former employs
 the weight that are adaptive to the distribution of rank changes.
 'unweighted' denotes a direct comparison of ranks without considering

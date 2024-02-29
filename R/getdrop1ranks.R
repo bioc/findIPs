@@ -53,8 +53,7 @@
 #' @export getdrop1ranks
 #'
 
-getdrop1ranks <- function(X, y,
-                          fun = c("t.test", "cox", "log2fc", "kruskal.test"),
+getdrop1ranks <- function(X, y, fun,
                           decreasing = FALSE,
                           topN = 100,
                           nCores = NULL) {

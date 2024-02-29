@@ -7,10 +7,10 @@
 findIPs(
   X,
   y,
-  fun = c("t.test", "cox", "log2fc", "kruskal.test"),
+  fun,
   decreasing = FALSE,
   topN = 100,
-  method = c("adaptive", "weightedSpearman", "unweighted"),
+  method = "adaptive",
   nCores = NULL
 )
 }
@@ -39,7 +39,8 @@ decreasingly.}
 
 \item{topN}{the number of important features included for comparison.}
 
-\item{method}{method to summarize rank changes. Both 'adaptive' and
+\item{method}{method to summarize rank changes. It should be one of the
+'adaptive', 'weightedSpearman', and 'unweighted'. Both 'adaptive' and
 'weightedSpearman' are weighted rank comparison method, but former employs
 the weight that are adaptive to the distribution of rank changes.
 'unweighted' denotes a direct comparison of ranks without considering

@@ -14,7 +14,8 @@
 #' a case removed.
 #' @param topN the top n features in origRank will be used for rank comparison.
 #' If null, include all features.
-#' @param method method to summarize rank changes. Both 'adaptive' and
+#' @param method method to summarize rank changes. It should be one of the
+#' 'adaptive', 'weightedSpearman', and 'unweighted'. Both 'adaptive' and
 #' 'weightedSpearman' are weighted rank comparison method, but former employs
 #' the weight that are adaptive to the distribution of rank changes.
 #' 'unweighted' denotes a direct comparison of ranks without considering
@@ -55,8 +56,10 @@
 #' @import methods
 #' @export sumRanks
 
-sumRanks <- function(origRank, drop1Rank, topN = NULL,
-                     method = c("adaptive", "weightedSpearman", "unweighted"),
+sumRanks <- function(origRank,
+                     drop1Rank,
+                     topN = NULL,
+                     method = "adaptive",
                      ...) {
 
   ## drop1Rank should be a matrix or data.frame

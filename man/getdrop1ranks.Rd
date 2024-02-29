@@ -4,14 +4,7 @@
 \alias{getdrop1ranks}
 \title{Derive ranking lists including original and leave-one-out rankings}
 \usage{
-getdrop1ranks(
-  X,
-  y,
-  fun = c("t.test", "cox", "log2fc", "kruskal.test"),
-  decreasing = FALSE,
-  topN = 100,
-  nCores = NULL
-)
+getdrop1ranks(X, y, fun, decreasing = FALSE, topN = 100, nCores = NULL)
 }
 \arguments{
 \item{X}{A data matrix, with rows being the variables and columns being

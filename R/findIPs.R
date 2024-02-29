@@ -26,11 +26,13 @@
 #' p-value should be ordered increasingly, while fold-change should be ordered
 #' decreasingly.
 #' @param topN the number of important features included for comparison.
-#' @param method method to summarize rank changes. Both 'adaptive' and
+#' @param method method to summarize rank changes. It should be one of the
+#' 'adaptive', 'weightedSpearman', and 'unweighted'. Both 'adaptive' and
 #' 'weightedSpearman' are weighted rank comparison method, but former employs
 #' the weight that are adaptive to the distribution of rank changes.
 #' 'unweighted' denotes a direct comparison of ranks without considering
 #' weights.
+#' 
 #' @param nCores the number of CPU cores used for parallel running.
 #' If nCores = NULL, a single core is used.
 #'
@@ -93,11 +95,10 @@
 #' plotIPs(IPs)
 #'
 
-findIPs <- function(X, y,
-                    fun = c("t.test", "cox", "log2fc", "kruskal.test"),
+findIPs <- function(X, y, fun,
                     decreasing = FALSE,
                     topN = 100,
-                    method = c("adaptive", "weightedSpearman", "unweighted"),
+                    method = "adaptive",
                     nCores = NULL) {
 
   # derive original ranking and leave-one-out rankings
