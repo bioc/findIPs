@@ -48,6 +48,8 @@
 #'
 #' @import survival
 #' @import BiocParallel
+#' @import Biobase
+#' @import SummarizedExperiment
 #' @importFrom stats sd t.test
 #' @importFrom utils data
 #' @export findIPs
@@ -70,6 +72,25 @@
 #'                     type = 'line',
 #'                     ylim = NULL)
 #' plotIPs(obj, topn = 5, ylim = NULL)
+#'
+#' ## Interop with ExpressionSet class
+#' library(Biobase)
+#' data(sample.ExpressionSet)
+#' design <- phenoData(sample.ExpressionSet)$type
+#' IPs <- findIPs(exprs(sample.ExpressionSet), design, fun = "t.test",
+#'                method = "adaptive")
+#' plotIPs(IPs)
+#'
+#' ## Interop with SummarizedExperiment class
+#' library(SummarizedExperiment)
+#' ## Make a SummarizedExperiment class
+#' sample.SummarizedExperiment <- makeSummarizedExperimentFromExpressionSet(
+#'   sample.ExpressionSet)
+#'
+#' design <- colData(sample.SummarizedExperiment)$type
+#' IPs <- findIPs(assay(sample.SummarizedExperiment), design, fun = "t.test",
+#'                method = "adaptive")
+#' plotIPs(IPs)
 #'
 
 findIPs <- function(X, y,

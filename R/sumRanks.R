@@ -65,6 +65,12 @@ sumRanks <- function(origRank, drop1Rank, topN = NULL,
   ## transfrorm to matrix
   drop1Rank <- as.matrix(drop1Rank)
 
+  ## argument check for method
+  if (length(method) > 1)
+    stop("method should be one of the 'adaptive', 'weightedSpearman', and
+         'unweighted'")
+  method <- match.arg(method, c("adaptive", "weightedSpearman", "unweighted"))
+
   ## check
   if (length(origRank) != nrow(drop1Rank))
     stop("origRank and drop1Rank should be equal in length")
