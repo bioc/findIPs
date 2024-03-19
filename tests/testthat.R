@@ -8,7 +8,7 @@ y <- miller05$y
 surv <- miller05$surv
 
 # save expected results
-#
+
 # obj <- getdrop1ranks(X, y,
 #                      fun = "t.test",
 #                      decreasing = FALSE,
@@ -30,17 +30,16 @@ surv <- miller05$surv
 #                                 method = "weightedSpearman")
 #
 # expected.t.adaptive.ipsr <- findIPs(X, y,
-#                                  fun = "t.test",
-#                                  decreasing = FALSE,
-#                                  topN = 100,
-#                                  method = "adaptive")
-#
+#                                     fun = "t.test",
+#                                     decreasing = FALSE,
+#                                     topN = 100,
+#                                     method = "adaptive")
 #
 # expected.cox.adaptive.ipsr <- findIPs(X, surv,
-#                                    fun = "cox",
-#                                    decreasing = FALSE,
-#                                    topN = 100,
-#                                    method = "adaptive")
+#                                       fun = "cox",
+#                                       decreasing = FALSE,
+#                                       topN = 100,
+#                                       method = "adaptive")
 #
 # save(list = c("expected.t.adaptive", "expected.t.unweighted",
 #               "expected.t.weighted", "expected.t.adaptive.ipsr",
@@ -84,21 +83,21 @@ observed.cox.adaptive.ipsr <- findIPs(X, surv,
                                       method = "adaptive")
 
 test_that("test getdrop1ranks and sumRanks",{
-  expect_equal(expected.t.adaptive, observed.t.adaptive)
-  expect_equal(expected.t.unweighted, observed.t.unweighted)
-  expect_equal(expected.t.weighted, expected.t.weighted)
+    expect_equal(expected.t.adaptive, observed.t.adaptive)
+    expect_equal(expected.t.unweighted, observed.t.unweighted)
+    expect_equal(expected.t.weighted, expected.t.weighted)
 })
 
 test_that("stepwise(getdrop1ranks and sumRanks) and one-step procedure",{
-  expect_equal(observed.t.adaptive.ipsr, observed.t.adaptive)
+    expect_equal(observed.t.adaptive.ipsr, observed.t.adaptive)
 })
 
 test_that("test ipsr",{
-  expect_equal(expected.t.adaptive.ipsr, observed.t.adaptive.ipsr)
+    expect_equal(expected.t.adaptive.ipsr, observed.t.adaptive.ipsr)
 })
 
 test_that("test ipsr for survival outcomes (ranked by univariate cox)",{
-  expect_equal(expected.cox.adaptive.ipsr, observed.cox.adaptive.ipsr)
+    expect_equal(expected.cox.adaptive.ipsr, observed.cox.adaptive.ipsr)
 })
 
 

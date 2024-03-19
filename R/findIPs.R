@@ -32,7 +32,7 @@
 #' the weight that are adaptive to the distribution of rank changes.
 #' 'unweighted' denotes a direct comparison of ranks without considering
 #' weights.
-#' 
+#'
 #' @param nCores the number of CPU cores used for parallel running.
 #' If nCores = NULL, a single core is used.
 #'
@@ -48,8 +48,6 @@
 #' @return \item{drop1RankWeighted}{The weighted leave-one-out rankings}
 #'
 #'
-#' @import survival
-#' @import BiocParallel
 #' @import Biobase
 #' @import SummarizedExperiment
 #' @importFrom stats sd t.test
@@ -101,17 +99,17 @@ findIPs <- function(X, y, fun,
                     method = "adaptive",
                     nCores = NULL) {
 
-  # derive original ranking and leave-one-out rankings
-  obj <- getdrop1ranks(X, y,
-                       fun = fun,
-                       decreasing = decreasing,
-                       topN = 100,
-                       nCores = nCores)
+    # derive original ranking and leave-one-out rankings
+    obj <- getdrop1ranks(X, y,
+                         fun = fun,
+                         decreasing = decreasing,
+                         topN = 100,
+                         nCores = nCores)
 
-  # calculate the influential scores for each observatoin
-  out <- sumRanks(obj$origRank, obj$drop1Rank, topN = topN, method = method)
+    # calculate the influential scores for each observatoin
+    out <- sumRanks(obj$origRank, obj$drop1Rank, topN = topN, method = method)
 
-  return(out)
+    return(out)
 
 }
 

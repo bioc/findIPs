@@ -32,12 +32,12 @@
 
 plotIPs <- function(obj, topn = 5, ylim = NULL, ... ) {
 
-  y <- obj$score
-  y <- y / sd(y)
-  x <- seq_len(length(y))
+    y <- obj$score
+    y <- y / sd(y)
+    x <- seq_len(length(y))
 
-  ## lollipop plot
-  lollipop(x, y, topn = topn, ylim = ylim)
+    ## lollipop plot
+    lollipop(x, y, topn = topn, ylim = ylim)
 
 }
 

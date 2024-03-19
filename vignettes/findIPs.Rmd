@@ -57,6 +57,20 @@ weights when comparing ranks.
 Step 3, calculate the cumulative rank changes for each observation. A diagnostic
 check is also required to identify any potential influential points. 
 
+
+# Installation
+
+The *findIPs* package can be installed from  Bioconductor using the 
+following commands:
+
+```{r, eval = FALSE}
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+     install.packages("BiocManager")
+BiocManager::install("findIPs")
+
+```
+
 # Dataset
 
 The *findIPs* package includes the miller05 microarray data (2). The data 
@@ -176,7 +190,7 @@ plotRankScatters(results.ipsr)
 
 ```
 
-The *plotAdaptiveWeights()* function aims to Visualize weight function if 
+The *plotAdaptiveWeights()* function aims to visualize weight function if 
 adaptive weights are used for rank comparison, that is *method = "adaptive"* 
 for *findIPs()* or *sumRanks()*. The argument *kappa* refers to the shape 
 parameter of the weight function. Here, the optimized kappa is 0.023 (Figure 3). 
@@ -274,7 +288,8 @@ mtext("C, adaptive weights", side = 3, line = 0, adj = 0)
 arXiv preprint arXiv:2303.10516 (2023).  
 2, Miller, Lance D., et al. "An expression signature for p53 status in human 
 breast cancer predicts mutation status, transcriptional effects, and patient 
-survival." Proceedings of the National Academy of Sciences 102.38 (2005): 13550-13555.doi:10.1073pnas.0506230102  
+survival." Proceedings of the National Academy of Sciences 102.38 (2005): 
+13550-13555.doi:10.1073pnas.0506230102  
 3, Da Pinto Costa, Joaquim; Soares, Carlos (2005): A weighted rank measure of 
 correlation. In Australian & New Zealand Journal of Statistics 47 (4), pp. 
 515–529.  
