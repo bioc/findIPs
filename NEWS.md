@@ -1,4 +1,4 @@
-# Updates in Version 0.99.1
+# Updates in Version 0.99.2
 
 1, Correction on sumRanks()
 2, Exchange the axis in plotRankScatters().
