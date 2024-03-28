@@ -1,7 +1,7 @@
 Type: Package
 Package: findIPs
 Title: Influential Points Detection for Feature Rankings
-Version: 0.99.1
+Version: 0.99.2
 Date: 2023-11-21
 Authors@R: c(
     person("Shuo", "Wang", , "wangsures@foxmail.com", role = c("aut", "cre"),
