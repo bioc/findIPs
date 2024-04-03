@@ -1,11 +1,41 @@
-# Updates in Version 0.99.2
 
-1, Correction on sumRanks()
-2, Exchange the axis in plotRankScatters().
-3, Update R version dependency from 4.0.0 to 4.4.0.
-4, Use more importFrom().
-5, Include Installation in Vignette
-6, Some formatting modification
+CHANGES IN VERSION 0.99.1
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Some formatting modification
 
 
- 
+CHANGES IN VERSION 0.99.2
+-------------------------
+
+NEW FEATURES
+
+    o Update R version dependency from 4.0.0 to 4.4.0
+    
+    o Use more importFrom()
+
+BUG FIXES
+
+    o Correction on sumRanks()
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Exchange the axis in plotRankScatters()
+
+    o Include Installation in Vignette
+
+    o Some formatting modification
+    
+
+CHANGES IN VERSION 0.99.3
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Format News
+
+
+
+
