@@ -103,7 +103,7 @@ findIPs <- function(X, y, fun,
     obj <- getdrop1ranks(X, y,
                          fun = fun,
                          decreasing = decreasing,
-                         topN = 100,
+                         topN = topN,
                          nCores = nCores)
 
     # calculate the influential scores for each observatoin
